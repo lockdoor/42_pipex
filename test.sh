@@ -1,0 +1,1 @@
+./pipex infile "cat -e" "grep \"hello\"" outfile
