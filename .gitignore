@@ -1,2 +1,7 @@
 test
 bin
+infile
+outfile
+pipex
+.vscode
+src

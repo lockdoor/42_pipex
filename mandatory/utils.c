@@ -1,28 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/16 08:01:05 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/16 08:17:26 by pnamnil          ###   ########.fr       */
+/*   Created: 2023/10/16 11:25:26 by pnamnil           #+#    #+#             */
+/*   Updated: 2023/10/19 07:52:13 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <stdio.h>
+#include "pipex.h"
 
-
-
-int main(int argc, char **argv, char **env)
+void	free_split(void *data)
 {
-    (void) argv;
-    (void) env;
-    if (argc < 5)
-    {
-        perror ("error on argv");
-        return (EXIT_FAILURE);
-    }
-    return (0);
+	char	**split;
+	int	i;
+
+	split = (char **) data;
+	i = -1;
+	while (split[++i])
+		free (split[i]);
+	free (split);
+}
+
+void	free_pipex(t_pipex *pipex)
+{
+	if (pipex->argv)
+		free_split (pipex->argv);
+	if (pipex->path)
+		free_split (pipex->path);
+	if (pipex->cmd)
+		free (pipex->cmd);
 }

@@ -1,23 +1,31 @@
 NAME = pipex
+
+LIBFT = libft.a
+LIBFT_PATH = libft
+
 CC = cc
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -I$(LIBFT_PATH)/includes
 
-SRC = $(addprefix src/, pipex.c)
-OBJ = $(patsubst src/%.c, bin/%.o, $(SRC))
+MPATH = mandatory
+MSRC = $(addprefix $(MPATH)/, pipex.c utils.c debug.c)
+MOBJ = $(patsubst $(MPATH)/%.c, bin/%.o, $(MSRC))
 
-bin/%.o: src/%.c
+bin/%.o: $(MPATH)/%.c
 	@mkdir -p bin
 	$(CC) $(CFLAGS) -c $< -o $@
 
 all: $(NAME)
-	bash test.sh
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+	./mytest.sh
+
+$(NAME): $(MOBJ)
+	$(MAKE) -C $(LIBFT_PATH)
+	$(CC) $(CFLAGS) $(MOBJ) $(LIBFT_PATH)/$(LIBFT)  -o $(NAME)
 
 clean:
 	rm -rf bin
 
 fclean: clean
+	$(MAKE) -C $(LIBFT_PATH) fclean
 	rm -f $(NAME)
 
 re: fclean all

@@ -1,22 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/16 08:13:58 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/16 08:16:31 by pnamnil          ###   ########.fr       */
+/*   Created: 2023/10/19 07:52:29 by pnamnil           #+#    #+#             */
+/*   Updated: 2023/10/19 07:56:54 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include "pipex.h"
 
-typedef struct s_pipex
+void	print_split(char **sp)
 {
-	char	*infile;
-	char	*outfile;
-}	t_pipex;
-
-#endif
+	while (*sp)
+		ft_printf ("%s\n", *sp++);
+}
