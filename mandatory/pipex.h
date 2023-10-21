@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 13:22:45 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/20 13:17:58 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/21 15:54:04 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,11 @@
 // access, execve, close, pipe
 # include <unistd.h>
 
-// perror
+// wait, waitpid
+# include <sys/wait.h>
+# include <sys/types.h>
+
+// perror, strerror
 # include <stdio.h>
 
 // free
@@ -25,7 +29,10 @@
 // open
 # include <fcntl.h>
 
-// ft_bytezero, ft_splite
+// errno
+# include <errno.h>
+
+// ft_bytezero, ft_splite, ft_strjoin, ft_strchr
 # include <libft.h>
 # include <ft_printf.h>
 
@@ -47,6 +54,7 @@ typedef struct s_pipex
 	int		pid2;
 	int		infile;
 	int		outfile;
+	int		status;
 }	t_pipex;
 
 // debug
@@ -55,8 +63,12 @@ void	print_split(char **sp);
 // utils.c
 void	free_split(void *data);
 void	free_pipex(t_pipex *pipex);
+void	close_pipe(t_pipex *pipex);
+void	exit_wrong_cmd(char *cmd, t_pipex *pipex);
+void	exit_error(char *s, t_pipex *pipex, int exit_code);
 
-// t_bool	parse_cmd(t_pipex *pipex, char *argv, char **envp);
+// child_process.c
+void	first_child(t_pipex *pipex, char **argv, char **envp);
+void	second_child(t_pipex *pipex, char **argv, char **envp);
 
 #endif
-

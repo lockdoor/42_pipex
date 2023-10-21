@@ -7,7 +7,7 @@ CC = cc
 CFLAGS = -Wall -Werror -Wextra -I$(LIBFT_PATH)/includes
 
 MPATH = mandatory
-MSRC = $(addprefix $(MPATH)/, pipex.c utils.c debug.c)
+MSRC = $(addprefix $(MPATH)/, pipex.c child_process.c utils.c debug.c)
 MOBJ = $(patsubst $(MPATH)/%.c, bin/%.o, $(MSRC))
 
 bin/%.o: $(MPATH)/%.c

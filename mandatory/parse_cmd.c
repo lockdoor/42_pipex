@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 14:01:15 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/18 15:06:03 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/21 15:49:40 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_bool	make_cmd(t_pipex *pipex)
 {
 	char	*fullpath;
 	int		i;
-	
+
 	pipex->cmd = ft_strjoin ("/", *pipex->argv);
 	if (pipex->cmd)
 	{
@@ -53,7 +53,7 @@ t_bool	make_cmd(t_pipex *pipex)
 		{
 			fullpath = ft_strjoin (pipex->path[i], pipex->cmd);
 			if (!fullpath)
-				break;
+				break ;
 			if (access(fullpath, X_OK) != -1)
 			{
 				free (pipex->cmd);
