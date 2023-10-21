@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 13:22:45 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/19 08:30:06 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/20 13:17:58 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # define WRONG_ARGS_NUMBER "Wrong number of argument"
 # define WRONG_INFILE "Can not access Infile"
 # define WRONG_OUTFILE "Can not access Outfile"
-# define WRONG_COMMAND "Command not found"
+# define WRONG_COMMAND "command not found"
 # define WRONG_PIPE "Error on create pipe"
 # define WRONG_EXEC "Error on execute"
 # define WRONG_FORK "Fork error"

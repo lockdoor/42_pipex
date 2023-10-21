@@ -15,7 +15,7 @@ bin/%.o: $(MPATH)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 all: $(NAME)
-	./mytest.sh
+# ./mytest.sh
 
 $(NAME): $(MOBJ)
 	$(MAKE) -C $(LIBFT_PATH)
