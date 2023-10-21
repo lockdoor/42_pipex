@@ -66,21 +66,21 @@ function check_diff {
 # printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
 # check_diff
 
-echo
-printf "${MAGENTA}./pipex \"non_exist_input\" \"ls\" \"wc\" \"outfile\"\n${NC}"
-./pipex "non_exist_input" "ls" "wc" "outfile"
-printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
-< non_exist_input ls | wc > original
-printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
-check_diff
+# echo
+# printf "${MAGENTA}./pipex \"non_exist_input\" \"ls\" \"wc\" \"outfile\"\n${NC}"
+# ./pipex "non_exist_input" "ls" "wc" "outfile"
+# printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+# < non_exist_input ls | wc > original
+# printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+# check_diff
 
-echo
-printf "${MAGENTA}./pipex \"infile\" \"ls\" \"wc\" \"non_exist_input/file\"\n${NC}"
-./pipex "infile" "ls" "wc" "non_exist_input/file"
-printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
-< infile ls | wc > non_exist_input/file
-printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
-check_diff
+# echo
+# printf "${MAGENTA}./pipex \"infile\" \"ls\" \"wc\" \"non_exist_input/file\"\n${NC}"
+# ./pipex "infile" "ls" "wc" "non_exist_input/file"
+# printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+# < infile ls | wc > non_exist_input/file
+# printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+# check_diff
 
 # echo
 # printf "${MAGENTA}./pipex \"non_exist_input\" \"/bin/catsdc\" \"wcss\" \"outfile\"\n${NC}"
@@ -113,3 +113,5 @@ check_diff
 # < infile /bin/caqwdt | /bin/lsqwd -ls > nodir/original
 # printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
 # check_diff
+
+./pipex infile oeriurn ououfn outfile

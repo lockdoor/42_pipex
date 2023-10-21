@@ -14,6 +14,14 @@ bin/%.o: $(MPATH)/%.c
 	@mkdir -p bin
 	$(CC) $(CFLAGS) -c $< -o $@
 
+BPATH = bonus
+BSRC = $(addprefix $(BPATH)/, pipex_bonus.c utils_bonus.c debug.c)
+BOBJ = $(patsubst $(BPATH)/%.c, bin/%.o, $(BSRC))
+
+bin/%.o: $(BPATH)/%.c
+	@mkdir -p bin
+	$(CC) $(CFLAGS) -c $< -o $@
+
 all: $(NAME)
 # ./mytest.sh
 
@@ -21,6 +29,8 @@ $(NAME): $(MOBJ)
 	$(MAKE) -C $(LIBFT_PATH)
 	$(CC) $(CFLAGS) $(MOBJ) $(LIBFT_PATH)/$(LIBFT)  -o $(NAME)
 
+bonus: $(BOBJ)
+	$(CC) $(CFLAGS) $(BOBJ) $(LIBFT_PATH)/$(LIBFT)  -o $(NAME)
 clean:
 	rm -rf bin
 
