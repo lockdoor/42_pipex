@@ -12,58 +12,61 @@
 
 #include "pipex_bonus.h"
 
-// char	**make_path(char **envp, t_pipex *pipex)
-// {
-// 	char	**path;
-
-// 	while (*envp && ft_memcmp(*envp, "PATH=", 5))
-// 		envp++ ;
-// 	if (*envp == NULL)
-// 		exit_error ("wrong path", pipex, EXIT_FAILURE);
-// 	path = ft_split(*envp + 5, ':');
-// 	if (!path)
-// 		exit_error ("wrong path", pipex, EXIT_FAILURE);
-// 	return (path);
-// }
-
+/* 
+** number of pipe eq number of command plus 1,
+** because first pipe use in parent then rest pipe
+** use in each command of child
+*/
 int main(int argc, char *argv[], char *envp[]) {
-    int fd_n = argc - 2;
+	t_pipex	pipex;
 
-	//wrong in norminate, should malloc instead
-    int fd[fd_n][2];
-    for (int i = 0; i < fd_n; i++) {
-        pipe(fd[i]);
+	ft_bzero(&pipex, sizeof(t_pipex));
+	if (argc < 5)
+		exit_error (WRONG_ARGS_NUMBER, &pipex, EXIT_FAILURE);
+	pipex.path = make_path(envp, &pipex);
+	pipex.cmd_nb = argc - 3;
+
+	/* if create pipe failed, it's exit by function */
+	create_pipe (&pipex);
+
+    pipex.infile = open(argv[1], O_RDONLY);
+	// if (pipex.infile == -1) {
+	// 	perror (argv[1]);
+	// 	// exit_error (argv[1], &pipex, errno);
+	// }
+    dup2(pipex.infile, pipex.fd[0][0]);
+    close(pipex.infile);
+
+    pipex.outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	// if (pipex.outfile == -1)
+	// 	exit_error (argv[argc - 1], &pipex, EXIT_FAILURE);
+    dup2(pipex.outfile, pipex.fd[pipex.cmd_nb][1]);
+    close(pipex.outfile);
+
+	/* make pid[] */
+	pipex.pid = (int *) malloc (pipex.cmd_nb * sizeof(int *)); 
+    for (int i = 1; i < pipex.cmd_nb + 1; i++) {
+		child_process (i, &pipex, argv, envp);
     }
 
-    int infile = open(argv[1], O_RDONLY);
-    dup2(infile, fd[0][0]);
-    close(infile);
+	// for (int i = 0; i < pipex.cmd_nb; i++){
+	// 	waitpid(pipex.pid[i], NULL, 0);
+	// }
 
-    int outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
-    dup2(outfile, fd[fd_n - 1][1]);
-    close(outfile);
+	/* close pipe */
+	close_pipe (&pipex);
+	// free_pipex (&pipex);
 
-    char *cmd[] = {"/bin/cat", "/usr/bin/wc", NULL};
-    char *arg[][2] = {{cmd[0], NULL}, {cmd[1], NULL}};
-
-    for (int i = 1; i < fd_n; i++) {
-        int pid = fork();
-        if (pid == 0) {
-            close(fd[i - 1][1]);
-            dup2(fd[i - 1][0], STDIN_FILENO);
-            close(fd[i - 1][0]);
-            dup2(fd[i][1], STDOUT_FILENO);
-            close(fd[i][1]);
-            if (execve(cmd[i - 1], arg[i - 1], envp) == -1){
-				perror (cmd[i - 1]);
-			}
-        }
-		
-    }
-	for (int i = 0; i < fd_n; i++){
-		close (fd[i][0]);
-		close (fd[i][1]);
+	for (int i = 0; i < pipex.cmd_nb - 1; i++){
+		waitpid (pipex.pid[i], NULL, 0);
 	}
-    return 0;
-}
 
+	
+	waitpid (pipex.pid[pipex.cmd_nb - 1], &pipex.status, 0);
+	free_pipex (&pipex);
+	if (pipex.status)
+	{
+		return (WEXITSTATUS(pipex.status));
+	}
+    return (EXIT_SUCCESS);
+}

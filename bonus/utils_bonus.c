@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 11:25:26 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/21 16:56:32 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/22 10:49:48 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,10 @@ void	free_pipex(t_pipex *pipex)
 		free_split (pipex->path);
 	if (pipex->cmd)
 		free (pipex->cmd);
-}
-
-void	close_pipe(t_pipex *pipex)
-{
-	close (pipex->infile);
-	close (pipex->outfile);
-	close (pipex->fd[0]);
-	close (pipex->fd[1]);
+	if (pipex->pid)
+	{
+		free (pipex->pid);
+	}
 }
 
 void	exit_wrong_cmd(char *cmd, t_pipex *pipex)
@@ -55,4 +51,19 @@ void	exit_error(char *s, t_pipex *pipex, int exit_code)
 	perror (s);
 	free_pipex (pipex);
 	exit (exit_code);
+}
+
+/* if make path fail, exit with error code 1 */
+char	**make_path(char **envp, t_pipex *pipex)
+{
+	char	**path;
+
+	while (*envp && ft_memcmp(*envp, "PATH=", 5))
+		envp++ ;
+	if (*envp == NULL)
+		exit_error ("wrong path", pipex, EXIT_FAILURE);
+	path = ft_split(*envp + 5, ':');
+	if (!path)
+		exit_error ("wrong path", pipex, EXIT_FAILURE);
+	return (path);
 }

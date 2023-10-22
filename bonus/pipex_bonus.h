@@ -49,26 +49,29 @@ typedef struct s_pipex
 	char	*cmd;
 	char	**argv;
 	char	**path;
-	int		fd[2];
-	int		pid1;
-	int		pid2;
+	int		cmd_nb;
+	int		**fd;
+	int		*pid;
 	int		infile;
 	int		outfile;
 	int		status;
 }	t_pipex;
 
 // debug
-void	print_split(char **sp);
+// void	print_split(char **sp);
 
-// utils.c
+// utils_bonus.c
 void	free_split(void *data);
 void	free_pipex(t_pipex *pipex);
-void	close_pipe(t_pipex *pipex);
 void	exit_wrong_cmd(char *cmd, t_pipex *pipex);
 void	exit_error(char *s, t_pipex *pipex, int exit_code);
+char	**make_path(char **envp, t_pipex *pipex);
 
-// child_process.c
-void	first_child(t_pipex *pipex, char **argv, char **envp);
-void	second_child(t_pipex *pipex, char **argv, char **envp);
+// manage_pipe_bonus.c
+void	create_pipe(t_pipex *pipex);
+void	close_pipe(t_pipex *pipex);
+
+// child_process_bonus.c
+void	child_process(int i, t_pipex *pipex, char **argv, char **envp);
 
 #endif

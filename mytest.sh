@@ -75,10 +75,10 @@ function check_diff {
 # check_diff
 
 # echo
-# printf "${MAGENTA}./pipex \"infile\" \"ls\" \"wc\" \"non_exist_input/file\"\n${NC}"
-# ./pipex "infile" "ls" "wc" "non_exist_input/file"
+# printf "${MAGENTA}./pipex \"infile\" \"ls\" \"wc\" \"non_exist_output/file\"\n${NC}"
+# ./pipex "infile" "ls" "wc" "non_exist_output/file"
 # printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
-# < infile ls | wc > non_exist_input/file
+# < infile ls | wc > non_exist_output/file
 # printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
 # check_diff
 
@@ -114,4 +114,11 @@ function check_diff {
 # printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
 # check_diff
 
-./pipex infile oeriurn ououfn outfile
+# < exist_input /bin/caqwdt | cat | wc | wc | wsdfca | /bin/lsqwd -ls > nodir/outfiile
+echo
+printf "${MAGENTA}./pipex \"exist_input\" \"/bin/caqwdt\" "wc" "wc" "wsdfca" \"/bin/lsqwd -ls\" \"nodir/outfile\"\n${NC}"
+./pipex "exist_input" "/bin/caqwdt" "cat" "wc" "wc" "wsdfca" "/bin/lsqwd -ls" "nodir/outfile"
+printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+< exist_input /bin/caqwdt | cat | wc | wc | wsdfca | /bin/lsqwd -ls > nodir/outfiile
+printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+# check_diff
