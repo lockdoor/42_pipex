@@ -22,7 +22,7 @@ bin/%.o: $(BPATH)/%.c
 	@mkdir -p bin
 	$(CC) $(CFLAGS) -c $< -o $@
 
-all: $(NAME)
+all: bonus
 # ./mytest.sh
 
 $(NAME): $(MOBJ)
