@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 11:25:26 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/22 10:49:48 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/23 09:56:39 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,12 @@ void	free_pipex(t_pipex *pipex)
 		free_split (pipex->path);
 	if (pipex->cmd)
 		free (pipex->cmd);
+	if (pipex->fd)
+		close_pipe (pipex);
 	if (pipex->pid)
-	{
 		free (pipex->pid);
-	}
+	if (pipex->here_doc)
+		unlink (HERE_DOC);
 }
 
 void	exit_wrong_cmd(char *cmd, t_pipex *pipex)

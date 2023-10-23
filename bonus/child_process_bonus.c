@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 10:23:27 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/22 14:58:33 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/23 11:27:41 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,8 @@ void	child_process(int i, t_pipex *pipex, char **argv, char **envp)
 			errno = 2;
 			exit_error (argv[pipex->cmd_nb + 2], pipex, EXIT_FAILURE);
 		}
-		
-				
-		pipex->cmd = parse_cmd (pipex, argv[i + 1]);
+					
+		pipex->cmd = parse_cmd (pipex, argv[i + 1 + pipex->here_doc]);
 		if (pipex->cmd == NULL)
 			exit_wrong_cmd (*pipex->argv, pipex);
 	

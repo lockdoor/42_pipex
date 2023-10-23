@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 13:22:45 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/21 15:54:04 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/23 07:08:31 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@
 # include <errno.h>
 
 // ft_bytezero, ft_splite, ft_strjoin, ft_strchr
-# include <libft.h>
-# include <ft_printf.h>
+# include "libft.h"
+# include "ft_printf.h"
 
 # define WRONG_ARGS_NUMBER "Wrong number of argument"
 # define WRONG_INFILE "Can not access Infile"

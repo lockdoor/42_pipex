@@ -32,9 +32,10 @@
 // errno
 # include <errno.h>
 
-// ft_bytezero, ft_splite, ft_strjoin, ft_strchr
-# include <libft.h>
-# include <ft_printf.h>
+// ft_bytezero, ft_splite, ft_strjoin, ft_strchr, ft_memcmp
+# include "libft.h"
+# include "ft_printf.h"
+# include "get_next_line.h"
 
 # define WRONG_ARGS_NUMBER "Wrong number of argument"
 # define WRONG_INFILE "Can not access Infile"
@@ -43,12 +44,15 @@
 # define WRONG_PIPE "Error on create pipe"
 # define WRONG_EXEC "Error on execute"
 # define WRONG_FORK "Fork error"
+# define WRONG_HERE_DOC "Error on read here_doc"
+# define HERE_DOC ".here_doc_tmp"
 
 typedef struct s_pipex
 {
 	char	*cmd;
 	char	**argv;
 	char	**path;
+	int		here_doc;
 	int		cmd_nb;
 	int		**fd;
 	int		*pid;
@@ -73,5 +77,9 @@ void	close_pipe(t_pipex *pipex);
 
 // child_process_bonus.c
 void	child_process(int i, t_pipex *pipex, char **argv, char **envp);
+
+// here_doc_bonus.c
+int		count_argv(int argc, char **argv, t_pipex *pipex);
+void	get_infile (char **argv, t_pipex *pipex);
 
 #endif

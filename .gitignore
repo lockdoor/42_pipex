@@ -8,3 +8,7 @@ src
 pipex-tester
 PIPEX_TESTER
 original
+pipex.dSYM
+.here_doc
+infile1
+here_doc

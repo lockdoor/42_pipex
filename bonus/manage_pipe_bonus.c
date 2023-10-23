@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 10:34:46 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/22 10:38:26 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/22 16:35:48 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,8 @@ void	close_pipe(t_pipex *pipex)
 	for (int i = 0; i < pipex->cmd_nb + 1; i++){
 		close (pipex->fd[i][0]);
 		close (pipex->fd[i][1]);
+		free (pipex->fd[i]);
 	}
+	free (pipex->fd);
+	pipex->fd = NULL;
 }

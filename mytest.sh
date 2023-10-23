@@ -92,7 +92,7 @@ function check_diff {
 
 # echo
 # printf "${MAGENTA}./pipex \"infile\" \"/bin/caqwdt\" \"/bin/lsqwd -ls\" \"outfile\"\n${NC}"
-# ./pipex "infile" "/bin/caqwdt" "/bin/lsqwd -ls" "outfile"
+# valgrind ./pipex "infile" "/bin/caqwdt" "/bin/lsqwd -ls" "outfile"
 # printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
 # < infile /bin/caqwdt  | /bin/lsqwd -ls > original
 # printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
@@ -115,10 +115,68 @@ function check_diff {
 # check_diff
 
 # < exist_input /bin/caqwdt | cat | wc | wc | wsdfca | /bin/lsqwd -ls > nodir/outfiile
-echo
-printf "${MAGENTA}./pipex \"exist_input\" \"/bin/caqwdt\" "wc" "wc" "wsdfca" \"/bin/lsqwd -ls\" \"nodir/outfile\"\n${NC}"
-./pipex "exist_input" "/bin/caqwdt" "cat" "wc" "wc" "wsdfca" "/bin/lsqwd -ls" "nodir/outfile"
-printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
-< exist_input /bin/caqwdt | cat | wc | wc | wsdfca | /bin/lsqwd -ls > nodir/outfiile
-printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+# echo
+# printf "${MAGENTA}./pipex \"exist_input\" \"/bin/caqwdt\" "wc" "wc" "wsdfca" \"/bin/lsqwd -ls\" \"nodir/outfile\"\n${NC}"
+# ./pipex "exist_input" "/bin/caqwdt" "cat" "wc" "wc" "wsdfca" "/bin/lsqwd -ls" "nodir/outfile"
+# printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+# < exist_input /bin/caqwdt | cat | wc | wc | wsdfca | /bin/lsqwd -ls > nodir/outfiile
+# printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
 # check_diff
+
+# here_doc
+# echo
+# printf "${MAGENTA}here_doc with no limiter\nexpect: error${NC}\n"
+# echo -en "i am here_doc\n" > here_doc
+# < here_doc ./pipex "here_doc" "EOF"
+# rm -f here_doc
+
+# echo
+# printf "${MAGENTA}here_doc with wrong limiter 1\nexpect: error${NC}\n"
+# echo -en "i am here_doc\nEOF" > here_doc
+# < here_doc ./pipex "here_doc" "EOF"
+# rm -f here_doc
+
+# echo
+# printf "${MAGENTA}here_doc with wrong limiter 2\nexpect: error${NC}\n"
+# echo -en "i am here_doc\nEOFq\n" > here_doc
+# < here_doc ./pipex "here_doc" "EOF"
+# rm -f here_doc
+
+# echo
+# printf "${MAGENTA}here_doc with wrong limiter 3\nexpect: error${NC}\n"
+# echo -en "i am here_doc\nEO\n" > here_doc
+# < here_doc ./pipex "here_doc" "EOF"
+# rm -f here_doc
+
+# echo
+# printf "${MAGENTA}here_doc with correct limiter\nexpect: ok${NC}\n"
+# echo -en "i am here_doc\nEOF\n" > here_doc
+# < here_doc ./pipex "here_doc" "EOF"
+# rm -f here_doc
+
+rm -f outfile
+rm -f original
+# echo
+echo -en "i am here_doc\nEOF\n" > here_doc
+echo -en "i am here_doc\n" > infile1
+# < here_doc ./pipex "here_doc" "EOF" "cat" "wc -cl" "grep 0" "sort" "cat" "outfile"
+# < infile1 cat | wc -cl |  grep 0  | sort | cat > original
+
+# < here_doc ./pipex "here_doc" "EOF" "cat" "wc -cl" "cat" "outfile"
+# ./pipex "here_doc" "EOF" "cat" "wc -cl" "grep 0" "sort" "cat" "outfile"
+
+# ./pipex "here_doc" "EOF" "cat" "cat" "cat" "cat" "wc" "outfile"
+< here_doc ./pipex "here_doc" "EOF1" "cat" "cat" "cat" "cat" "wc" "outfile"
+printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+
+# < infile1 cat | cat | cat | cat | wc > original
+<< EOF1 cat | cat | cat | cat | wc > original
+i am here_doc
+EOF
+# < infile1 cat | wc -cl | sort | cat > original
+printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+check_diff
+rm -f here_doc
+rm -f infile1
+
+

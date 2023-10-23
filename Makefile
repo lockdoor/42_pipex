@@ -16,14 +16,14 @@ bin/%.o: $(MPATH)/%.c
 
 BPATH = bonus
 BSRC = $(addprefix $(BPATH)/, pipex_bonus.c child_process_bonus.c\
-		manage_pipe_bonus.c utils_bonus.c)
+		manage_pipe_bonus.c here_doc_bonus.c utils_bonus.c)
 BOBJ = $(patsubst $(BPATH)/%.c, bin/%.o, $(BSRC))
 
 bin/%.o: $(BPATH)/%.c
 	@mkdir -p bin
 	$(CC) $(CFLAGS) -c $< -o $@
 
-all: $(NAME)
+all: $(NAME) 
 # all: bonus
 # ./mytest.sh
 
@@ -34,6 +34,9 @@ $(NAME): $(MOBJ)
 bonus: $(BOBJ)
 	$(MAKE) -C $(LIBFT_PATH)
 	$(CC) $(CFLAGS) $(BOBJ) $(LIBFT_PATH)/$(LIBFT)  -o $(NAME)
+
+hd:
+
 	
 clean:
 	rm -rf bin
