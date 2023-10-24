@@ -65,8 +65,12 @@ int main(int argc, char *argv[], char *envp[]) {
 	// free_pipex (&pipex);
 
 	for (int i = 0; i < pipex.cmd_nb - 1; i++){
-		waitpid (pipex.pid[i], NULL, 0);
+		waitpid (pipex.pid[i], NULL, WUNTRACED);
 	}
+
+	// for (int i = 0; i < pipex.cmd_nb; i++){
+	// 	wait (NULL);
+	// }
 
 	waitpid (pipex.pid[pipex.cmd_nb - 1], &pipex.status, 0);
 	free_pipex (&pipex);

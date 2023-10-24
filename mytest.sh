@@ -159,6 +159,7 @@ rm -f original
 # echo
 echo -en "i am here_doc\nEOF\n" > here_doc
 echo -en "i am here_doc\n" > infile1
+echo -e "sgfefeqd qwdqwdddafasd s+64 65 30 9 2 92 ad asd lim asd as d asd\n asdasd \nlim\n a dasd sd \n asdasd asdasdsbvfsbvsdd asd asd\n afdsvdsvasdqpkqwd ew edfsb" > in_file2
 # < here_doc ./pipex "here_doc" "EOF" "cat" "wc -cl" "grep 0" "sort" "cat" "outfile"
 # < infile1 cat | wc -cl |  grep 0  | sort | cat > original
 
@@ -166,13 +167,13 @@ echo -en "i am here_doc\n" > infile1
 # ./pipex "here_doc" "EOF" "cat" "wc -cl" "grep 0" "sort" "cat" "outfile"
 
 # ./pipex "here_doc" "EOF" "cat" "cat" "cat" "cat" "wc" "outfile"
-< here_doc ./pipex "here_doc" "EOF1" "cat" "cat" "cat" "cat" "wc" "outfile"
+< in_file2 ./pipex "here_doc" "lim2" "cat" "cat" "cat" "cat" "wc" "outfile"
 printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
 
 # < infile1 cat | cat | cat | cat | wc > original
-<< EOF1 cat | cat | cat | cat | wc > original
+<< lim2 < infile_2 cat | cat | cat | cat | wc > original
 i am here_doc
-EOF
+# lim2
 # < infile1 cat | wc -cl | sort | cat > original
 printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
 check_diff
