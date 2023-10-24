@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 10:34:46 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/24 05:58:13 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/24 13:56:58 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,27 +26,33 @@ void	error_pipe(t_pipex *pipex, int n)
 
 void	create_pipe(t_pipex *pipex)
 {
-	int i;
+	int	i;
 
 	pipex->fd = (int **) malloc((pipex->cmd_nb + 1) * sizeof(int **));
 	if (!pipex->fd)
 		exit_error (WRONG_PIPE, pipex, EXIT_FAILURE);
 	i = -1;
-    while (++i < pipex->cmd_nb + 1)
+	while (++i < pipex->cmd_nb + 1)
 	{
 		pipex->fd[i] = malloc (sizeof(int) * 2);
 		if (!pipex->fd[i])
 			error_pipe (pipex, i - 1);
 		if (pipe(pipex->fd[i]) == -1)
 			error_pipe (pipex, i);
-    }
+	}
 }
 
 void	close_pipe(t_pipex *pipex)
 {
-	for (int i = 0; i < pipex->cmd_nb + 1; i++){
-		close (pipex->fd[i][0]);
-		close (pipex->fd[i][1]);
+	int	i;
+
+	i = -1;
+	while (++i < pipex->cmd_nb + 1)
+	{
+		if (pipex->fd[i][0] != -1)
+			close (pipex->fd[i][0]);
+		if (pipex->fd[i][1] != -1)
+			close (pipex->fd[i][1]);
 		free (pipex->fd[i]);
 	}
 	free (pipex->fd);

@@ -9,7 +9,6 @@ CFLAGS = -Wall -Werror -Wextra -I$(LIBFT_PATH)/includes
 MPATH = mandatory
 MSRC = $(addprefix $(MPATH)/, pipex.c child_process.c utils.c debug.c)
 MOBJ = $(patsubst $(MPATH)/%.c, bin/%.o, $(MSRC))
-
 bin/%.o: $(MPATH)/%.c
 	@mkdir -p bin
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -18,14 +17,11 @@ BPATH = bonus
 BSRC = $(addprefix $(BPATH)/, pipex_bonus.c child_process_bonus.c\
 		manage_pipe_bonus.c here_doc_bonus.c utils_bonus.c)
 BOBJ = $(patsubst $(BPATH)/%.c, bin/%.o, $(BSRC))
-
 bin/%.o: $(BPATH)/%.c
 	@mkdir -p bin
 	$(CC) $(CFLAGS) -c $< -o $@
 
-all: $(NAME) 
-# all: bonus
-# ./mytest.sh
+all: $(NAME)
 
 $(NAME): $(MOBJ)
 	$(MAKE) -C $(LIBFT_PATH)
@@ -35,9 +31,6 @@ bonus: $(BOBJ)
 	$(MAKE) -C $(LIBFT_PATH)
 	$(CC) $(CFLAGS) $(BOBJ) $(LIBFT_PATH)/$(LIBFT)  -o $(NAME)
 
-hd:
-
-	
 clean:
 	rm -rf bin
 
@@ -47,4 +40,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus

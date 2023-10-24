@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_bonus.h                                            :+:      :+:    :+:   */
+/*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 13:22:45 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/21 16:21:00 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/24 12:10:39 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,6 @@ void	child_process(int i, t_pipex *pipex, char **argv, char **envp);
 
 // here_doc_bonus.c
 int		count_argv(int argc, char **argv, t_pipex *pipex);
-void	get_infile (char **argv, t_pipex *pipex);
+void	get_infile(char **argv, t_pipex *pipex);
 
 #endif

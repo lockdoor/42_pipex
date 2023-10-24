@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 13:22:08 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/23 16:07:31 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/24 14:23:36 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int	main(int argc, char **argv, char **envp)
 	close_pipe (&pipex);
 	waitpid (pipex.pid1, NULL, 0);
 	waitpid (pipex.pid2, &pipex.status, 0);
+	free_pipex (&pipex);
 	if (pipex.status)
 		return (WEXITSTATUS(pipex.status));
 	return (EXIT_SUCCESS);

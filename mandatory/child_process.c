@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 10:26:19 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/21 16:04:40 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/24 14:15:45 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,19 @@ static char	*parse_cmd2(t_pipex *pipex)
 	{
 		tmp = ft_strjoin (*path, pipex->cmd);
 		if (!tmp)
+		{
+			free (pipex->cmd);
 			return (NULL);
+		}
 		if (access(tmp, X_OK) != -1)
+		{
+			free (pipex->cmd);
 			return (tmp);
+		}
 		free (tmp);
 		path++ ;
 	}
+	free (pipex->cmd);
 	return (NULL);
 }
 
