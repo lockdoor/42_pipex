@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 13:22:08 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/24 14:23:36 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/25 10:02:42 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@ int	main(int argc, char **argv, char **envp)
 
 	ft_bzero (&pipex, sizeof(pipex));
 	if (argc != 5)
-		exit_error (WRONG_ARGS_NUMBER, &pipex, EXIT_FAILURE);
+	{
+		errno = EINVAL;
+		exit_error ("pipex", &pipex, EXIT_FAILURE);
+	}
 	pipex.path = make_path(envp, &pipex);
 	pipex.infile = open (argv[1], O_RDONLY);
 	pipex.outfile = open (argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0666);

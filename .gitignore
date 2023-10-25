@@ -15,3 +15,5 @@ here_doc
 ael_test
 .here_doc_tmp
 in_file2
+.pipex_bonus
+.pipex_mandatory

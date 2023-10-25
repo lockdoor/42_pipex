@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 10:26:19 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/24 14:15:45 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/25 12:57:01 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ void	first_child(t_pipex *pipex, char **argv, char **envp)
 		exit_error (WRONG_FORK, pipex, EXIT_FAILURE);
 	if (pipex->pid1 == 0)
 	{
+		if (access(argv[1], R_OK) == -1)
+			exit_error (argv[1], pipex, errno);
 		if (pipex->infile == -1)
 		{
 			errno = 2;
@@ -84,6 +86,8 @@ void	second_child(t_pipex *pipex, char **argv, char **envp)
 		exit_error (WRONG_FORK, pipex, EXIT_FAILURE);
 	if (pipex->pid2 == 0)
 	{
+		if (access(argv[4], W_OK) == -1)
+			exit_error (argv[4], pipex, EXIT_FAILURE);
 		if (pipex->outfile == -1)
 		{
 			errno = 2;

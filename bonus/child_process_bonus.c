@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 10:23:27 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/24 13:48:24 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/25 15:21:01 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,23 @@ static char	*parse_cmd(t_pipex *pipex, char *argv)
 
 void	check_file_open(int i, char **argv, t_pipex *pipex)
 {
+	// if (i == 1)
+	// {
+	// 	if (pipex->here_doc)
+	// 	{
+	// 		if (access(HERE_DOC, R_OK) == -1)
+	// 			exit_error (HERE_DOC, pipex, EXIT_FAILURE);
+	// 	}
+	// 	else if (access(argv[1], R_OK) == -1)
+	// 		exit_error (argv[1], pipex, EXIT_FAILURE);
+	// }
 	if (i == 1 && pipex->infile == -1)
 	{
 		errno = 2;
 		exit_error (argv[1], pipex, errno);
 	}
+	if (i == pipex->cmd_nb && access(argv[pipex->cmd_nb + 2], W_OK) == -1)
+		exit_error (argv[pipex->cmd_nb + 2], pipex, EXIT_FAILURE);
 	if (i == pipex->cmd_nb && pipex->outfile == -1)
 	{
 		errno = 2;

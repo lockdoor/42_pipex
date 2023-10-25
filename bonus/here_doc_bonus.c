@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 06:48:25 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/24 12:01:42 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/25 15:12:57 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,24 @@ void	read_here_doc(char **argv, t_pipex *pipex)
 
 int	count_argv(int argc, char **argv, t_pipex *pipex)
 {
+	if (argc < 5)
+	{
+		errno = EINVAL;
+		exit_error ("pipex", pipex, EXIT_FAILURE);
+	}
+	pipex->here_doc = 0;
 	if (!ft_memcmp(argv[1], "here_doc", 9))
 	{
 		pipex->here_doc = 1;
-		if (5 > argc - 1)
-			exit_error (WRONG_ARGS_NUMBER, pipex, EXIT_FAILURE);
+		if (argc - 1 < 5)
+		{
+			errno = EINVAL;
+			exit_error ("pipex", pipex, EXIT_FAILURE);
+		}
 		pipex->infile = open (HERE_DOC, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 		if (pipex->infile != -1)
 			read_here_doc (argv, pipex);
 	}
-	if (5 > argc)
-		exit_error (WRONG_ARGS_NUMBER, pipex, EXIT_FAILURE);
 	pipex->cmd_nb = argc - 3 - pipex->here_doc;
 	return (argc - pipex->here_doc);
 }

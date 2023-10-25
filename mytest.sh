@@ -1,5 +1,8 @@
 #! /bin/bash
 
+< mytest.sh cat > infile
+clear
+
 NC="\033[0m"
 BOLD="\033[1m"
 ULINE="\033[4m"
@@ -9,16 +12,9 @@ YELLOW="\033[33m"
 BLUE="\033[34m"
 MAGENTA="\033[35m"
 
-# cat << EOF > infile
-# one two three four five
-# six seven eight nine ten
-# EOF
-# ./pipex infile "grep six" "wc -w" outfile
-# < infile grep "six" | wc -w
-# echo "exit code: "$?
-# rm -f infile
-
-# < infile grep "three" | awk '{print $3}'
+TEST_ACCESS=1
+TEST_MANDATORY=0
+TEST_INVALID_ARG=0
 
 function clear_screen {
     sleep 5
@@ -31,135 +27,269 @@ function check_diff {
     printf "${NC}"
 }
 
-# normal case
-clear
-echo
-printf "${MAGENTA}./pipex \"infile\" \"cat\" \"hostname\" \"outfile\"\n${NC}"
-valgrind --leak-check=full ./pipex "infile" "cat" "hostname" "outfile"
-printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
-< infile cat | hostname > original
-printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
-check_diff
-clear_screen
+# -----------------------------------------
+#             MANDATORY ZONE
+# -----------------------------------------
+if [ $TEST_MANDATORY -eq 1 ]
+	then
+		echo "normal case"
+		printf "${MAGENTA}./pipex \"infile\" \"cat\" \"hostname\" \"outfile\"\n${NC}"
+		valgrind --leak-check=full ./pipex "infile" "cat" "hostname" "outfile"
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< infile cat | hostname > original
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		check_diff
+		clear_screen
 
-# normal case
-echo
-printf "${MAGENTA}./pipex \"infile\" \"grep Now\" \"head -2\" \"outfile\"\n${NC}"
-valgrind --leak-check=full ./pipex "infile" "grep Now" "head -2" "outfile"
-printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
-< infile grep Now | head -2 > original
-printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
-check_diff
-clear_screen
+		echo "normal case"
+		printf "${MAGENTA}./pipex \"infile\" \"grep Now\" \"head -2\" \"outfile\"\n${NC}"
+		valgrind --leak-check=full ./pipex "infile" "grep Now" "head -2" "outfile"
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< infile grep Now | head -2 > original
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		check_diff
+		clear_screen
 
-# error infile
-echo
-printf "${MAGENTA}./pipex \"not-existing/infile\" \"grep Now\" \"wc -w\" \"outfile\"\n${NC}"
-valgrind --leak-check=full ./pipex "not-existing/infile" "grep Now" "wc -w" "outfile"
-printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
-< not-existing/infile grep Now | wc -w > original
-printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
-check_diff
-clear_screen
+		echo "error infile"
+		printf "${MAGENTA}./pipex \"not-existing/infile\" \"grep Now\" \"wc -w\" \"outfile\"\n${NC}"
+		valgrind --leak-check=full ./pipex "not-existing/infile" "grep Now" "wc -w" "outfile"
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< not-existing/infile grep Now | wc -w > original
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		check_diff
+		clear_screen
 
-# error command 2
-echo
-printf "${MAGENTA}./pipex \"infile\" \"cat\" \"notexisting\" \"outfile\"\n${NC}"
-valgrind --leak-check=full ./pipex "infile" "cat" "notexisting" "outfile"
-printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
-< infile cat | notexisting > original
-printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
-check_diff
-clear_screen
+		echo "error command 2"
+		printf "${MAGENTA}./pipex \"infile\" \"cat\" \"notexisting\" \"outfile\"\n${NC}"
+		valgrind --leak-check=full ./pipex "infile" "cat" "notexisting" "outfile"
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< infile cat | notexisting > original
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		check_diff
+		clear_screen
 
-# normal case
-echo
-printf "${MAGENTA}./pipex \"/infile1\" \"ls\" \"wc\" \"outfile\"\n${NC}"
-valgrind --leak-check=full ./pipex "/infile" "ls" "wc" "outfile"
-printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
-< /infile1 ls | wc > original
-printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
-check_diff
-clear_screen
+		echo "normal case"
+		printf "${MAGENTA}./pipex \"/infile1\" \"ls\" \"wc\" \"outfile\"\n${NC}"
+		valgrind --leak-check=full ./pipex "/infile" "ls" "wc" "outfile"
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< /infile1 ls | wc > original
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		check_diff
+		clear_screen
 
-#error infile
-echo
-printf "${MAGENTA}./pipex \"non_exist_input\" \"ls\" \"wc\" \"outfile\"\n${NC}"
-valgrind --leak-check=full ./pipex "non_exist_input" "ls" "wc" "outfile"
-printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
-< non_exist_input ls | wc > original
-printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
-check_diff
-clear_screen
+		echo "error infile"
+		printf "${MAGENTA}./pipex \"non_exist_input\" \"ls\" \"wc\" \"outfile\"\n${NC}"
+		valgrind --leak-check=full ./pipex "non_exist_input" "ls" "wc" "outfile"
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< non_exist_input ls | wc > original
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		check_diff
+		clear_screen
 
-# error outfile
-echo
-printf "${MAGENTA}./pipex \"infile\" \"ls\" \"wc\" \"non_exist_output/file\"\n${NC}"
-valgrind --leak-check=full ./pipex "infile" "ls" "wc" "non_exist_output/file"
-printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
-< infile ls | wc > non_exist_output/file
-printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
-check_diff
-clear_screen
+		echo "error outfile"
+		printf "${MAGENTA}./pipex \"infile\" \"ls\" \"wc\" \"non_exist_output/file\"\n${NC}"
+		valgrind --leak-check=full ./pipex "infile" "ls" "wc" "non_exist_output/file"
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< infile ls | wc > non_exist_output/file
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		check_diff
+		clear_screen
 
-# error infile cmd1 cmd2
-echo
-printf "${MAGENTA}./pipex \"non_exist_input\" \"/bin/catsdc\" \"wcss\" \"outfile\"\n${NC}"
-valgrind --leak-check=full ./pipex "non_exist_input" "/bin/catsdc" "wcss -cl" "outfile"
-printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
-< non_exist_input /bin/catsdc | wcss -cl > original
-printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
-check_diff
-clear_screen
+		echo "error infile cmd1 cmd2"
+		printf "${MAGENTA}./pipex \"non_exist_input\" \"/bin/catsdc\" \"wcss\" \"outfile\"\n${NC}"
+		valgrind --leak-check=full ./pipex "non_exist_input" "/bin/catsdc" "wcss -cl" "outfile"
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< non_exist_input /bin/catsdc | wcss -cl > original
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		check_diff
+		clear_screen
 
-# error cmd1 cmd2
-echo
-printf "${MAGENTA}./pipex \"infile\" \"/bin/caqwdt\" \"/bin/lsqwd -ls\" \"outfile\"\n${NC}"
-valgrind --leak-check=full ./pipex "infile" "/bin/caqwdt" "/bin/lsqwd -ls" "outfile"
-printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
-< infile /bin/caqwdt  | /bin/lsqwd -ls > original
-printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
-check_diff
-clear_screen
+		echo "error cmd1 cmd2"
+		printf "${MAGENTA}./pipex \"infile\" \"/bin/caqwdt\" \"/bin/lsqwd -ls\" \"outfile\"\n${NC}"
+		valgrind --leak-check=full ./pipex "infile" "/bin/caqwdt" "/bin/lsqwd -ls" "outfile"
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< infile /bin/caqwdt  | /bin/lsqwd -ls > original
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		check_diff
+		clear_screen
 
-# error infile cmd1 cmd2 
-echo
-printf "${MAGENTA}./pipex \"non_exist_input\" \"/bin/caqwdt\" \"/bin/lsqwd -ls\" \"outfile\"\n${NC}"
-valgrind --leak-check=full ./pipex "non_exist_input" "/bin/caqwdt" "/bin/lsqwd -ls" "outfile"
-printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
-< infile /bin/caqwdt  | /bin/lsqwd -ls > original
-printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
-check_diff
-clear_screen
+		echo "error infile cmd1 cmd2 "
+		printf "${MAGENTA}./pipex \"non_exist_input\" \"/bin/caqwdt\" \"/bin/lsqwd -ls\" \"outfile\"\n${NC}"
+		valgrind --leak-check=full ./pipex "non_exist_input" "/bin/caqwdt" "/bin/lsqwd -ls" "outfile"
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< infile /bin/caqwdt  | /bin/lsqwd -ls > original
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		check_diff
+		clear_screen
 
-# error cmd1 cmd2 outfile
-echo
-printf "${MAGENTA}./pipex \"infile\" \"/bin/caqwdt\" \"/bin/lsqwd -ls\" \"nodir/outfile\"\n${NC}"
-valgrind --leak-check=full ./pipex "infile" "/bin/caqwdt" "/bin/lsqwd -ls" "nodir/outfile"
-printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
-< infile /bin/caqwdt | /bin/lsqwd -ls > nodir/original
-printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
-check_diff
-clear_screen
+		echo "error cmd1 cmd2 outfile"
+		printf "${MAGENTA}./pipex \"infile\" \"/bin/caqwdt\" \"/bin/lsqwd -ls\" \"nodir/outfile\"\n${NC}"
+		valgrind --leak-check=full ./pipex "infile" "/bin/caqwdt" "/bin/lsqwd -ls" "nodir/outfile"
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< infile /bin/caqwdt | /bin/lsqwd -ls > nodir/original
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		check_diff
+		clear_screen
+fi
 
-# error multi wrong cmd outfile
-echo
-printf "${MAGENTA}./pipex \"infile\" \"/bin/caqwdt\" "wc" "wc" "wsdfca" \"/bin/lsqwd -ls\" \"nodir/outfile\"\n${NC}"
-valgrind --leak-check=full ./pipex "infile" "/bin/caqwdt" "cat" "wc" "wc" "wsdfca" "/bin/lsqwd -ls" "nodir/outfile"
-printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
-< infile /bin/caqwdt | cat | wc | wc | wsdfca | /bin/lsqwd -ls > nodir/outfiile
-printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
-check_diff
-clear_screen
+# -----------------------------------------
+
+function check_exit_code {
+	if [ $1 -eq $2 ]
+		then
+			printf "${ULINE}${GREEN}My program exit code: $1 == OK${NC}\n"
+		else
+			printf "${ULINE}${RED}My program exit code: $1 == KO${NC}\n"
+	fi
+}
+
+if [ $TEST_INVALID_ARG -eq 1 ]
+	then
+		echo "wrong argument expect Ivalid argument, exit code 1"
+		printf "\n${MAGENTA}./pipex\n${NC}"
+		./pipex
+		check_exit_code $? 1
+		sleep 1
+
+		printf "\n${MAGENTA}./pipex infile\n${NC}"
+		./pipex infile
+		check_exit_code $? 1
+		sleep 1
+
+		printf "\n${MAGENTA}./pipex infile cat\n${NC}"
+		./pipex infile cat
+		check_exit_code $? 1
+		sleep 1
+
+		printf "\n${MAGENTA}./pipex infile cat wc\n${NC}"
+		./pipex infile cat wc
+		check_exit_code $? 1
+		sleep 1
+
+		printf "\n${MAGENTA}./pipex infile cat wc outfile\n${NC}"
+		./pipex infile cat wc outfile
+		check_exit_code $? 0
+		sleep 1
+fi
+
+# -------------------------------------------
+# open but can not access
+# 444 = r, 222 = w, 111 = x
+# -------------------------------------------
+if [ $TEST_ACCESS -eq "1" ]
+	then
+		rm -f inaccess outfile original
+
+		printf "${MAGENTA}\nno infile\n${NC}"
+		./pipex inaccess cat wc outfile
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		pipe=$(< inaccess cat | wc > original)
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		check_diff
+		sleep 1
+
+		touch inaccess
+
+		printf "${MAGENTA}\ninfile 000 = zero bit${NC}\n"
+		chmod 000 inaccess
+		./pipex inaccess cat wc outfile
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		pipe=$(< inaccess cat | wc > original)
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		check_diff
+		sleep 1
+
+		printf "${MAGENTA}\ninfile 111 = execute only${NC}\n"
+		chmod 111 inaccess
+		./pipex inaccess cat wc outfile
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< inaccess cat | wc > original
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		check_diff
+		sleep 1
+
+		printf "${MAGENTA}\ninfile 222 = write only${NC}\n"
+		chmod 222 inaccess
+		./pipex inaccess cat wc outfile
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< inaccess cat | wc > original
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		check_diff
+		sleep 1
+
+		printf "${MAGENTA}\ninfile 444 = read only${NC}\n"
+		chmod 444 inaccess
+		./pipex inaccess cat wc outfile
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< inaccess cat | wc > original
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		check_diff
+		sleep 1
+
+		rm -f inaccess
+
+		printf "${MAGENTA}\noutfile 000 = zero bit${NC}\n"
+		chmod 000 outfile original
+		./pipex infile cat wc outfile
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< infile cat | wc > original
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		sleep 1
+
+		printf "${MAGENTA}\noutfile 111 = execute only${NC}\n"
+		chmod 111 outfile original
+		./pipex infile cat wc outfile
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< infile cat | wc > original
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		sleep 1
+
+		printf "${MAGENTA}\noutfile 444 = read only${NC}\n"
+		chmod 444 outfile original
+		./pipex infile cat wc outfile
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< infile cat | wc > original
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		sleep 1
+
+		printf "${MAGENTA}\noutfile 222 = write only${NC}\n"
+		chmod 222 outfile original
+		./pipex infile cat wc outfile
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< infile cat | wc > original
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		sleep 1
+fi
+# check_diff
+# clear_screen
+
+# when wrong path should print "no such file"
+
+# -----------------------------------------
+
+
+# -----------------------------------------
+#               BONUS ZONE
+# -----------------------------------------
+# echo "error multi wrong cmd outfile"
+# printf "${MAGENTA}./pipex \"infile\" \"/bin/caqwdt\" "wc" "wc" "wsdfca" \"/bin/lsqwd -ls\" \"nodir/outfile\"\n${NC}"
+# valgrind --leak-check=full ./pipex "infile" "/bin/caqwdt" "cat" "wc" "wc" "wsdfca" "/bin/lsqwd -ls" "nodir/outfile"
+# printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+# < infile /bin/caqwdt | cat | wc | wc | wsdfca | /bin/lsqwd -ls > nodir/outfile
+# printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+# check_diff
+# clear_screen
 
 # here_doc
-echo
-printf "${MAGENTA}here_doc with no limiter\nexpect: error${NC}\n"
-echo -en "i am here_doc\n" > here_doc
-valgrind --leak-check=full < here_doc ./pipex "here_doc" "EOF"
-printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
-rm -f here_doc
-clear_screen
+# echo
+# printf "${MAGENTA}here_doc with no limiter\nexpect: error${NC}\n"
+# echo -en "i am here_doc\n" > here_doc
+# valgrind --leak-check=full < here_doc ./pipex "here_doc" "EOF"
+# printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+# rm -f here_doc
+# clear_screen
+
+# ===============================
 
 # echo
 # printf "${MAGENTA}here_doc with wrong limiter 1\nexpect: error${NC}\n"
