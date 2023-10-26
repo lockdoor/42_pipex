@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 10:26:19 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/25 12:57:01 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/26 08:11:43 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ static char	*parse_cmd2(t_pipex *pipex)
 	char	*tmp;
 
 	pipex->cmd = ft_strjoin ("/", *pipex->argv);
-	if (!pipex->cmd)
-		return (NULL);
 	path = pipex->path;
+	if (!pipex->cmd || !path)
+		return (NULL);
 	while (*path)
 	{
 		tmp = ft_strjoin (*path, pipex->cmd);
@@ -69,6 +69,8 @@ void	first_child(t_pipex *pipex, char **argv, char **envp)
 			errno = 2;
 			exit_error (argv[1], pipex, EXIT_FAILURE);
 		}
+		if (!pipex->path)
+			exit_wrong_cmd (*pipex->argv, pipex);
 		pipex->cmd = parse_cmd (pipex, argv[2]);
 		if (pipex->cmd == NULL)
 			exit_wrong_cmd (*pipex->argv, pipex);
@@ -93,6 +95,8 @@ void	second_child(t_pipex *pipex, char **argv, char **envp)
 			errno = 2;
 			exit_error (argv[4], pipex, EXIT_FAILURE);
 		}
+		if (!pipex->path)
+			exit_wrong_cmd (*pipex->argv, pipex);
 		pipex->cmd = parse_cmd (pipex, argv[3]);
 		if (pipex->cmd == NULL)
 			exit_wrong_cmd (*pipex->argv, pipex);

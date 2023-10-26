@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 11:25:26 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/23 09:56:39 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/25 17:15:49 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ char	**make_path(char **envp, t_pipex *pipex)
 	while (*envp && ft_memcmp(*envp, "PATH=", 5))
 		envp++ ;
 	if (*envp == NULL)
-		exit_error ("wrong path", pipex, EXIT_FAILURE);
+		return (NULL);
 	path = ft_split(*envp + 5, ':');
 	if (!path)
-		exit_error ("wrong path", pipex, EXIT_FAILURE);
+		return (NULL);
 	return (path);
 }

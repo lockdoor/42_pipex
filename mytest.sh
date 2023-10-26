@@ -12,9 +12,10 @@ YELLOW="\033[33m"
 BLUE="\033[34m"
 MAGENTA="\033[35m"
 
-TEST_ACCESS=1
+TEST_ACCESS=0
 TEST_MANDATORY=0
 TEST_INVALID_ARG=0
+TEST_INVALID_ARG_HEREDOC=0
 
 function clear_screen {
     sleep 5
@@ -143,6 +144,9 @@ function check_exit_code {
 	fi
 }
 
+# -------------------------------------------
+# test number of argument
+# -------------------------------------------
 if [ $TEST_INVALID_ARG -eq 1 ]
 	then
 		echo "wrong argument expect Ivalid argument, exit code 1"
@@ -169,6 +173,42 @@ if [ $TEST_INVALID_ARG -eq 1 ]
 		printf "\n${MAGENTA}./pipex infile cat wc outfile\n${NC}"
 		./pipex infile cat wc outfile
 		check_exit_code $? 0
+		sleep 1
+fi
+
+if [ $TEST_INVALID_ARG_HEREDOC -eq 1 ]
+	then
+		echo "here_doc wrong argument expect Ivalid argument, exit code 1"
+		printf "\n${MAGENTA}./pipex\n${NC}"
+		./pipex
+		check_exit_code $? 1
+		sleep 1
+
+		printf "\n${MAGENTA}./pipex here_doc\n${NC}"
+		./pipex here_doc
+		check_exit_code $? 1
+		sleep 1
+
+		printf "\n${MAGENTA}./pipex here_doc limit\n${NC}"
+		./pipex here_doc limit
+		check_exit_code $? 1
+		sleep 1
+
+		printf "\n${MAGENTA}./pipex here_doc limit cat\n${NC}"
+		./pipex here_doc limit cat
+		check_exit_code $? 1
+		sleep 1
+
+		printf "\n${MAGENTA}./pipex here_doc limit cat wc\n${NC}"
+		./pipex here_doc limit cat wc
+		check_exit_code $? 1
+		sleep 1
+
+		printf "\n${MAGENTA}./pipex here_doc limit cat wc outfile\n${NC}"
+		echo -en "lsdjf sdkfjalf\nlimit\n" > .tempfile
+		< .tempfile ./pipex here_doc limit cat wc outfile
+		check_exit_code $? 0
+		rm -f .tempfile
 		sleep 1
 fi
 
@@ -260,6 +300,7 @@ if [ $TEST_ACCESS -eq "1" ]
 		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
 		sleep 1
 fi
+
 # check_diff
 # clear_screen
 

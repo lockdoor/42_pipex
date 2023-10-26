@@ -6,23 +6,23 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 13:22:08 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/25 10:02:42 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/25 17:15:20 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	**make_path(char **envp, t_pipex *pipex)
+char	**make_path(char **envp)
 {
 	char	**path;
 
 	while (*envp && ft_memcmp(*envp, "PATH=", 5))
 		envp++ ;
 	if (*envp == NULL)
-		exit_error ("wrong path", pipex, EXIT_FAILURE);
+		return (NULL);
 	path = ft_split(*envp + 5, ':');
 	if (!path)
-		exit_error ("wrong path", pipex, EXIT_FAILURE);
+		return (NULL);
 	return (path);
 }
 
@@ -36,7 +36,7 @@ int	main(int argc, char **argv, char **envp)
 		errno = EINVAL;
 		exit_error ("pipex", &pipex, EXIT_FAILURE);
 	}
-	pipex.path = make_path(envp, &pipex);
+	pipex.path = make_path(envp);
 	pipex.infile = open (argv[1], O_RDONLY);
 	pipex.outfile = open (argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	if (pipe(pipex.fd) == -1)
