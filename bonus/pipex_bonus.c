@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 16:11:32 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/24 13:59:31 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/26 09:02:30 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ int	main(int argc, char *argv[], char *envp[])
 
 	ft_bzero(&pipex, sizeof(t_pipex));
 	count_argv (argc, argv, &pipex);
-	pipex.path = make_path(envp, &pipex);
+	pipex.path = make_path(envp);
 	create_pipe (&pipex);
 	get_infile (argv, &pipex);
 	dup2(pipex.infile, pipex.fd[0][0]);
 	if (pipex.infile > -1)
 		close(pipex.infile);
-	pipex.outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	pipex.outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	dup2(pipex.outfile, pipex.fd[pipex.cmd_nb][1]);
 	if (pipex.infile > -1)
 		close(pipex.outfile);

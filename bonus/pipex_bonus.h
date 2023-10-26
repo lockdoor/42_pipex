@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 13:22:45 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/24 12:10:39 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/26 08:27:14 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	free_split(void *data);
 void	free_pipex(t_pipex *pipex);
 void	exit_wrong_cmd(char *cmd, t_pipex *pipex);
 void	exit_error(char *s, t_pipex *pipex, int exit_code);
-char	**make_path(char **envp, t_pipex *pipex);
+char	**make_path(char **envp);
 
 // manage_pipe_bonus.c
 void	create_pipe(t_pipex *pipex);

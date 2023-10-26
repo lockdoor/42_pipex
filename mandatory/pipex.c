@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 13:22:08 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/25 17:15:20 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/26 09:03:22 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	main(int argc, char **argv, char **envp)
 	}
 	pipex.path = make_path(envp);
 	pipex.infile = open (argv[1], O_RDONLY);
-	pipex.outfile = open (argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	pipex.outfile = open (argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (pipe(pipex.fd) == -1)
 		exit_error (WRONG_PIPE, &pipex, errno);
 	pipex.pid1 = fork ();

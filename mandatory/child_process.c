@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 10:26:19 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/26 08:11:43 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/26 14:46:02 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,10 @@ static char	*parse_cmd(t_pipex *pipex, char *argv)
 		return (NULL);
 	if (ft_strchr(*pipex->argv, '/'))
 	{
-		if (access(*pipex->argv, X_OK) != -1)
-			return (*pipex->argv);
+		if (access(*pipex->argv, X_OK) == 0)
+			return (ft_strdup(*pipex->argv));
+		else if (errno == 13)
+			exit_error (*pipex->argv, pipex, 126);
 		else
 			exit_error (*pipex->argv, pipex, 127);
 	}

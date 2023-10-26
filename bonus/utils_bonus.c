@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 11:25:26 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/25 17:15:49 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/26 08:26:48 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	exit_error(char *s, t_pipex *pipex, int exit_code)
 }
 
 /* if make path fail, exit with error code 1 */
-char	**make_path(char **envp, t_pipex *pipex)
+char	**make_path(char **envp)
 {
 	char	**path;
 
