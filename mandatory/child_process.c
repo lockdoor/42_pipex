@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 10:26:19 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/26 14:46:02 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/26 15:20:06 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static char	*parse_cmd(t_pipex *pipex, char *argv)
 		return (NULL);
 	if (ft_strchr(*pipex->argv, '/'))
 	{
-		if (access(*pipex->argv, X_OK) == 0)
+		if (access(*pipex->argv, X_OK | R_OK ) == 0)
 			return (ft_strdup(*pipex->argv));
 		else if (errno == 13)
 			exit_error (*pipex->argv, pipex, 126);
@@ -80,7 +80,10 @@ void	first_child(t_pipex *pipex, char **argv, char **envp)
 		dup2 (pipex->fd[1], STDOUT_FILENO);
 		close_pipe (pipex);
 		if (execve (pipex->cmd, pipex->argv, envp) == -1)
-			exit_error (WRONG_EXEC, pipex, errno);
+		{
+			free_pipex (pipex);
+			exit (0);
+		}
 	}
 }
 
@@ -106,6 +109,9 @@ void	second_child(t_pipex *pipex, char **argv, char **envp)
 		dup2 (pipex->outfile, STDOUT_FILENO);
 		close_pipe (pipex);
 		if (execve (pipex->cmd, pipex->argv, envp) == -1)
-			exit_error (WRONG_EXEC, pipex, errno);
+		{
+			free_pipex (pipex);
+			exit (0);
+		}
 	}
 }
