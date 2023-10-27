@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 13:22:45 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/27 08:27:35 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/27 15:17:12 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,8 @@ char	**make_path(char **envp);
 // px_free.c
 void	free_pipex(t_pipex *pipex);
 void	close_pipe(t_pipex *pipex);
+
+// px_split.c
+char	**px_split(const char *s, char c);
 
 #endif

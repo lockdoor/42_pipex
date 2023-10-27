@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 13:22:45 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/27 08:24:00 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/27 15:17:47 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,8 @@ void	exit_error(char *s, t_pipex *pipex, int exit_code);
 
 // px_free_bonus.c
 void	free_pipex(t_pipex *pipex);
+
+// px_split.c
+char	**px_split(const char *s, char c);
 
 #endif
