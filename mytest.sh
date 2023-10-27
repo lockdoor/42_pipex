@@ -13,11 +13,12 @@ YELLOW="\033[33m"
 BLUE="\033[34m"
 MAGENTA="\033[35m"
 
-TEST_ACCESS=1
-TEST_ACCESS_COMMAND=1
+TEST_ACCESS=0
+TEST_ACCESS_COMMAND=0
 TEST_MANDATORY=0
-TEST_INVALID_ARG=1
+TEST_INVALID_ARG=0
 TEST_INVALID_ARG_HEREDOC=0
+TEST_AWK=1
 TIME1=2
 
 function clear_screen {
@@ -388,6 +389,33 @@ fi
 
 # check_diff
 # clear_screen
+
+# -------------------------------------------
+# spacial test for awk
+# -------------------------------------------
+
+if [ $TEST_AWK -eq 1 ]
+	then
+		rm -f outfile original
+		cat mytest.sh > infile
+
+		./pipex infile "head -n1" "awk '{print \$1}'" outfile
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< infile head -n1 | awk '{print $1}' > original
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		check_diff
+		sleep $TIME1
+
+		./pipex infile "head -n1" "awk \"{print \$1}\"" outfile
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< infile head -n1 | awk '{print $1}' > original
+		# < infile head -n1 | awk "{print $1}" > original
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		check_diff
+		sleep $TIME1
+
+		# clear_screen
+fi
 
 # when wrong path should print "no such file"
 

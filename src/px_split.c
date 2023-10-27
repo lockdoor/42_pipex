@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 14:40:50 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/27 15:14:48 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/27 16:39:55 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,40 +58,54 @@ static char	**ft_split_helper(const char *s, int *idx)
 	return (sp);
 }
 
-static void	ft_set_minus_one(int *nb, int nb_len)
-{
-	int	i;
+// static void	ft_set_minus_one(int *nb, int nb_len)
+// {
+// 	int	i;
 
-	i = 0;
-	while (i < nb_len)
-	{
-		nb[i] = -1;
-		i++ ;
-	}
+// 	i = 0;
+// 	while (i < nb_len)
+// 	{
+// 		nb[i] = -1;
+// 		i++ ;
+// 	}
+// }
+
+// ft_split_and_trim()
+
+static void	ft_split_find_len_h1(int *i, const char *s, int *index, int *j)
+{
+	while (s[*i] && s[*i] != ' ')
+		*i += 1;
+	index[*j] = *i;
+		*j += 1;
 }
 
-static void	ft_split_find_len(int *i, const char *s)
+static void	ft_split_find_len(int *i, const char *s, int *index, int *j)
 {
-	if (s[*i] == '\''){
+	if (s[*i] == '\'')
+	{
 		*i += 1;
+		index[*j - 1] = *i;
 		while (s[*i] && s[*i] != '\'')
 			*i += 1;
 		if (s[*i])
-			*i += 1;
+			index[(*j)++] = (*i)++;
+		else
+			index[(*j)++] = (*i);
 	}
-	else if (s[*i] == '\"'){
+	else if (s[*i] == '\"')
+	{
 		*i += 1;
+		index[*j - 1] = *i;
 		while (s[*i] && s[*i] != '\"')
 			*i += 1;
 		if (s[*i])
-			*i += 1;
+			index[(*j)++] = (*i)++;
+		else
+			index[(*j)++] = (*i);
 	}
 	else
-	{
-		while (s[*i] && s[*i] != ' ')
-			*i += 1;
-	}
-
+		ft_split_find_len_h1 (i, s, index, j);
 }
 
 /* size of index if strlen == 1 , it require 3 for 2 index and -1 terminate */
@@ -107,7 +121,9 @@ char	**px_split(const char *s, char c)
 	index = (int *) malloc (i * sizeof(int));
 	if (!index)
 		return (NULL);
-	ft_set_minus_one (index, i);
+	j = -1;
+	while (++j < i)
+		index[j] = -1;
 	j = 0;
 	i = 0;
 	while (s[i])
@@ -116,9 +132,7 @@ char	**px_split(const char *s, char c)
 			i++ ;
 		if (s[i] && j % 2 == 0)
 			index[j++] = i;
-		ft_split_find_len (&i, s);
-		if (j % 2 == 1)
-			index[j++] = i;
+		ft_split_find_len (&i, s, index, &j);
 	}
 	return (ft_split_helper(s, index));
 }
