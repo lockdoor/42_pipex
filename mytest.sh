@@ -1,5 +1,6 @@
 #! /bin/bash
 
+# init infile
 < mytest.sh cat > infile
 clear
 
@@ -12,11 +13,12 @@ YELLOW="\033[33m"
 BLUE="\033[34m"
 MAGENTA="\033[35m"
 
-TEST_ACCESS=0
+TEST_ACCESS=1
 TEST_ACCESS_COMMAND=1
 TEST_MANDATORY=0
-TEST_INVALID_ARG=0
+TEST_INVALID_ARG=1
 TEST_INVALID_ARG_HEREDOC=0
+TIME1=2
 
 function clear_screen {
     sleep 5
@@ -154,27 +156,27 @@ if [ $TEST_INVALID_ARG -eq 1 ]
 		printf "\n${MAGENTA}./pipex\n${NC}"
 		./pipex
 		check_exit_code $? 1
-		sleep 1
+		sleep $TIME1
 
 		printf "\n${MAGENTA}./pipex infile\n${NC}"
 		./pipex infile
 		check_exit_code $? 1
-		sleep 1
+		sleep $TIME1
 
 		printf "\n${MAGENTA}./pipex infile cat\n${NC}"
 		./pipex infile cat
 		check_exit_code $? 1
-		sleep 1
+		sleep $TIME1
 
 		printf "\n${MAGENTA}./pipex infile cat wc\n${NC}"
 		./pipex infile cat wc
 		check_exit_code $? 1
-		sleep 1
+		sleep $TIME1
 
 		printf "\n${MAGENTA}./pipex infile cat wc outfile\n${NC}"
 		./pipex infile cat wc outfile
 		check_exit_code $? 0
-		sleep 1
+		sleep $TIME1
 fi
 
 if [ $TEST_INVALID_ARG_HEREDOC -eq 1 ]
@@ -183,34 +185,34 @@ if [ $TEST_INVALID_ARG_HEREDOC -eq 1 ]
 		printf "\n${MAGENTA}./pipex\n${NC}"
 		./pipex
 		check_exit_code $? 1
-		sleep 1
+		sleep $TIME1
 
 		printf "\n${MAGENTA}./pipex here_doc\n${NC}"
 		./pipex here_doc
 		check_exit_code $? 1
-		sleep 1
+		sleep $TIME1
 
 		printf "\n${MAGENTA}./pipex here_doc limit\n${NC}"
 		./pipex here_doc limit
 		check_exit_code $? 1
-		sleep 1
+		sleep $TIME1
 
 		printf "\n${MAGENTA}./pipex here_doc limit cat\n${NC}"
 		./pipex here_doc limit cat
 		check_exit_code $? 1
-		sleep 1
+		sleep $TIME1
 
 		printf "\n${MAGENTA}./pipex here_doc limit cat wc\n${NC}"
 		./pipex here_doc limit cat wc
 		check_exit_code $? 1
-		sleep 1
+		sleep $TIME1
 
 		printf "\n${MAGENTA}./pipex here_doc limit cat wc outfile\n${NC}"
 		echo -en "lsdjf sdkfjalf\nlimit\n" > .tempfile
 		< .tempfile ./pipex here_doc limit cat wc outfile
 		check_exit_code $? 0
 		rm -f .tempfile
-		sleep 1
+		sleep $TIME1
 fi
 
 # -------------------------------------------
@@ -227,7 +229,7 @@ if [ $TEST_ACCESS -eq 1 ]
 		< inaccess cat | wc > original
 		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
 		check_diff
-		sleep 1
+		sleep $TIME1
 
 		touch inaccess
 
@@ -238,7 +240,7 @@ if [ $TEST_ACCESS -eq 1 ]
 		< inaccess cat | wc > original
 		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
 		check_diff
-		sleep 1
+		sleep $TIME1
 
 		printf "${MAGENTA}\ninfile 111 = execute only${NC}\n"
 		chmod 111 inaccess
@@ -247,7 +249,7 @@ if [ $TEST_ACCESS -eq 1 ]
 		< inaccess cat | wc > original
 		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
 		check_diff
-		sleep 1
+		sleep $TIME1
 
 		printf "${MAGENTA}\ninfile 222 = write only${NC}\n"
 		chmod 222 inaccess
@@ -256,7 +258,7 @@ if [ $TEST_ACCESS -eq 1 ]
 		< inaccess cat | wc > original
 		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
 		check_diff
-		sleep 1
+		sleep $TIME1
 
 		printf "${MAGENTA}\ninfile 444 = read only${NC}\n"
 		chmod 444 inaccess
@@ -265,7 +267,7 @@ if [ $TEST_ACCESS -eq 1 ]
 		< inaccess cat | wc > original
 		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
 		check_diff
-		sleep 1
+		sleep $TIME1
 
 		rm -f inaccess
 
@@ -275,7 +277,7 @@ if [ $TEST_ACCESS -eq 1 ]
 		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
 		< infile cat | wc > original
 		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
-		sleep 1
+		sleep $TIME1
 
 		printf "${MAGENTA}\noutfile 111 = execute only${NC}\n"
 		chmod 111 outfile original
@@ -283,7 +285,7 @@ if [ $TEST_ACCESS -eq 1 ]
 		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
 		< infile cat | wc > original
 		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
-		sleep 1
+		sleep $TIME1
 
 		printf "${MAGENTA}\noutfile 444 = read only${NC}\n"
 		chmod 444 outfile original
@@ -291,7 +293,7 @@ if [ $TEST_ACCESS -eq 1 ]
 		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
 		< infile cat | wc > original
 		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
-		sleep 1
+		sleep $TIME1
 
 		printf "${MAGENTA}\noutfile 222 = write only${NC}\n"
 		chmod 222 outfile original
@@ -299,9 +301,10 @@ if [ $TEST_ACCESS -eq 1 ]
 		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
 		< infile cat | wc > original
 		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
-		sleep 1
+		sleep $TIME1
 
 		rm -f outfile original
+		clear_screen
 fi
 
 # -------------------------------------------
@@ -310,79 +313,77 @@ fi
 # -------------------------------------------
 if [ $TEST_ACCESS_COMMAND -eq 1 ]
 	then
+		rm -f outfile original
 		touch test_cmd
 
-		# chmod 000 test_cmd
-		# printf "${MAGENTA}\ninfile 000 = zero bit${NC}\n"
-		# printf "${MAGENTA}\n./pipex infile cat ./test_cmd outfile\n${NC}"
-		# ./pipex infile cat ./test_cmd outfile
-		# printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
-		# < infile cat | ./test_cmd > original
-		# printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
-		# check_diff
-		# sleep 1
+		chmod 000 test_cmd
+		printf "${MAGENTA}\ntest_cmd 000 = zero bit${NC}\n"
+		printf "${MAGENTA}\n./pipex infile cat ./test_cmd outfile\n${NC}"
+		./pipex infile cat ./test_cmd outfile
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< infile cat | ./test_cmd > original
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		check_diff
+		sleep $TIME1
 
-		# chmod 222 test_cmd
-		# printf "${MAGENTA}\ninfile 222 = write only${NC}\n"
-		# printf "${MAGENTA}\n./pipex infile cat ./test_cmd outfile\n${NC}"
-		# ./pipex infile cat ./test_cmd outfile
-		# printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
-		# < infile cat | ./test_cmd > original
-		# printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
-		# check_diff
-		# sleep 1
+		chmod 222 test_cmd
+		printf "${MAGENTA}\ntest_cmd 222 = write only${NC}\n"
+		printf "${MAGENTA}\n./pipex infile cat ./test_cmd outfile\n${NC}"
+		./pipex infile cat ./test_cmd outfile
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< infile cat | ./test_cmd > original
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		check_diff
+		sleep $TIME1
 
-		# chmod 444 test_cmd
-		# printf "${MAGENTA}\ninfile 444 = read only${NC}\n"
-		# printf "${MAGENTA}\n./pipex infile cat ./test_cmd outfile\n${NC}"
-		# ./pipex infile cat ./test_cmd outfile
-		# printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
-		# < infile cat | ./test_cmd > original
-		# printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
-		# check_diff
-		# sleep 1
+		chmod 444 test_cmd
+		printf "${MAGENTA}\ntest_cmd 444 = read only${NC}\n"
+		printf "${MAGENTA}\n./pipex infile cat ./test_cmd outfile\n${NC}"
+		./pipex infile cat ./test_cmd outfile
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< infile cat | ./test_cmd > original
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		check_diff
+		sleep $TIME1
 
 		chmod 111 test_cmd
-		printf "${MAGENTA}\ninfile 111 = fake execute${NC}\n"
+		printf "${MAGENTA}\ntest_cmd 111 = fake execute${NC}\n"
 		printf "${MAGENTA}\n./pipex infile cat ./test_cmd outfile\n${NC}"
 		./pipex infile cat ./test_cmd outfile
 		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
 		< infile cat | ./test_cmd > original
 		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
 		check_diff
-		sleep 1
+		sleep $TIME1
 
 		chmod 777 test_cmd
-		printf "${MAGENTA}\ninfile 777 = full access${NC}\n"
+		printf "${MAGENTA}\ntest_cmd 777 = full access${NC}\n"
 		printf "${MAGENTA}\n./pipex infile cat ./test_cmd outfile\n${NC}"
 		./pipex infile cat ./test_cmd outfile
 		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
 		< infile cat | ./test_cmd > original
 		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
 		check_diff
-		sleep 1
-
-		# touch test_cmd
-		# chmod 000 test_cmd
-		# printf "${MAGENTA}\n./pipex infile cat /test_cmd outfile\n${NC}"
-		# ./pipex infile cat /test_cmd outfile
-		# printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
-		# < infile cat | /test_cmd > original
-		# printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
-		# check_diff
-		# sleep 1
-
-		# # touch test_cmd
-		# # chmod 000 test_cmd
-		# printf "${MAGENTA}\n./pipex infile cat test/test_cmd outfile\n${NC}"
-		# ./pipex infile cat test/test_cmd outfile
-		# printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
-		# < infile cat | test/test_cmd > original
-		# printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
-		# check_diff
-		# sleep 1
+		sleep $TIME1
 
 		rm -f test_cmd
+
+		printf "${MAGENTA}\n./pipex infile cat /test_cmd outfile\n${NC}"
+		./pipex infile cat /test_cmd outfile
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< infile cat | /test_cmd > original
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		check_diff
+		sleep $TIME1
+
+		printf "${MAGENTA}\n./pipex infile cat test/test_cmd outfile\n${NC}"
+		./pipex infile cat test/test_cmd outfile
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< infile cat | test/test_cmd > original
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		check_diff
+		sleep $TIME1
+		clear_screen
 fi
 
 # check_diff
@@ -464,4 +465,6 @@ fi
 # printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
 # check_diff
 # rm -f here_doc
-# rm -f infile1
+rm -f infile
+
+

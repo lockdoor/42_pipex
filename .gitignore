@@ -4,7 +4,6 @@ infile
 outfile
 pipex
 .vscode
-src
 pipex-tester
 PIPEX_TESTER
 original

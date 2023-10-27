@@ -6,58 +6,11 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 10:23:27 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/26 15:46:35 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/27 08:26:50 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
-
-static char	*parse_cmd2(t_pipex *pipex)
-{
-	char	**path;
-	char	*tmp;
-
-	pipex->cmd = ft_strjoin ("/", *pipex->argv);
-	path = pipex->path;
-	if (!pipex->cmd)
-		return (NULL);
-	while (*path)
-	{
-		tmp = ft_strjoin (*path, pipex->cmd);
-		if (!tmp)
-		{
-			free (pipex->cmd);
-			return (NULL);
-		}
-		if (access(tmp, X_OK) != -1)
-		{
-			free (pipex->cmd);
-			return (tmp);
-		}
-		free (tmp);
-		path++ ;
-	}
-	free (pipex->cmd);
-	return (NULL);
-}
-
-static char	*parse_cmd(t_pipex *pipex, char *argv)
-{
-	pipex->argv = ft_split (argv, 32);
-	if (pipex->argv == NULL || !*pipex->argv)
-		return (NULL);
-	if (ft_strchr(*pipex->argv, '/'))
-	{
-		if (access(*pipex->argv, R_OK | X_OK) == 0)
-			return (ft_strdup(*pipex->argv));
-		else if (errno == 13)
-			exit_error (*pipex->argv, pipex, 126);
-		else
-			exit_error (*pipex->argv, pipex, 127);
-			// exit_wrong_cmd (*pipex->argv, pipex);
-	}
-	return (parse_cmd2(pipex));
-}
 
 void	check_file_open(int i, char **argv, t_pipex *pipex)
 {
@@ -102,13 +55,7 @@ void	child_process(int i, t_pipex *pipex, char **argv, char **envp)
 		dup2 (pipex->fd[i - 1][0], STDIN_FILENO);
 		dup2 (pipex->fd[i][1], STDOUT_FILENO);
 		close_pipe (pipex);
-		if (execve (pipex->cmd, pipex->argv, envp) == -1)
-		{
-			// perror(pipex->cmd);
-			free_pipex (pipex);
+		if (execve(pipex->cmd, pipex->argv, envp) == -1)
 			exit (0);
-			// exit_error (WRONG_EXEC, pipex, errno);	
-		}
-	
 	}
 }

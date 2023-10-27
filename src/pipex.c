@@ -6,25 +6,11 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 13:22:08 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/26 09:03:22 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/27 07:59:26 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-char	**make_path(char **envp)
-{
-	char	**path;
-
-	while (*envp && ft_memcmp(*envp, "PATH=", 5))
-		envp++ ;
-	if (*envp == NULL)
-		return (NULL);
-	path = ft_split(*envp + 5, ':');
-	if (!path)
-		return (NULL);
-	return (path);
-}
 
 int	main(int argc, char **argv, char **envp)
 {

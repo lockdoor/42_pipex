@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 11:25:26 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/21 15:51:16 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/27 08:02:42 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,24 +20,6 @@ void	free_split(void *data)
 	while (*split)
 		free (*split++);
 	free (data);
-}
-
-void	free_pipex(t_pipex *pipex)
-{
-	if (pipex->argv)
-		free_split (pipex->argv);
-	if (pipex->path)
-		free_split (pipex->path);
-	if (pipex->cmd)
-		free (pipex->cmd);
-}
-
-void	close_pipe(t_pipex *pipex)
-{
-	close (pipex->infile);
-	close (pipex->outfile);
-	close (pipex->fd[0]);
-	close (pipex->fd[1]);
 }
 
 void	exit_wrong_cmd(char *cmd, t_pipex *pipex)
