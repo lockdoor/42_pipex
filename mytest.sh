@@ -13,12 +13,12 @@ YELLOW="\033[33m"
 BLUE="\033[34m"
 MAGENTA="\033[35m"
 
-TEST_ACCESS=0
+TEST_ACCESS=1
 TEST_ACCESS_COMMAND=0
 TEST_MANDATORY=0
 TEST_INVALID_ARG=0
 TEST_INVALID_ARG_HEREDOC=0
-TEST_AWK=1
+TEST_AWK=0
 TIME1=2
 
 function clear_screen {
@@ -224,6 +224,7 @@ if [ $TEST_ACCESS -eq 1 ]
 	then
 		rm -f inaccess outfile original
 
+		echo "#################################################"
 		printf "${MAGENTA}\nno infile\n${NC}"
 		./pipex inaccess cat wc outfile
 		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
@@ -305,7 +306,7 @@ if [ $TEST_ACCESS -eq 1 ]
 		sleep $TIME1
 
 		rm -f outfile original
-		clear_screen
+		# clear_screen
 fi
 
 # -------------------------------------------

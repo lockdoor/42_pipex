@@ -6,20 +6,22 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 07:52:48 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/27 15:16:48 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/29 10:52:30 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static char	*parse_cmd2(t_pipex *pipex)
+static char	*parse_cmd_2(t_pipex *pipex)
 {
 	char	**path;
 	char	*tmp;
-
-	pipex->cmd = ft_strjoin ("/", *pipex->argv);
+	
 	path = pipex->path;
-	if (!pipex->cmd || !path)
+	if (!path)
+		return (NULL);
+	pipex->cmd = ft_strjoin ("/", *pipex->argv);
+	if (!pipex->cmd)
 		return (NULL);
 	while (*path)
 	{
@@ -49,13 +51,16 @@ char	*parse_cmd(t_pipex *pipex, char *argv)
 	if (ft_strchr(*pipex->argv, '/'))
 	{
 		if (access(*pipex->argv, R_OK | X_OK) == 0)
+		{
+			ft_printf ("file ok\n");
 			return (ft_strdup(*pipex->argv));
+		}
 		else if (errno == 13)
 			exit_error (*pipex->argv, pipex, 126);
 		else
 			exit_error (*pipex->argv, pipex, 127);
 	}
-	return (parse_cmd2(pipex));
+	return (parse_cmd_2(pipex));
 }
 
 char	**make_path(char **envp)

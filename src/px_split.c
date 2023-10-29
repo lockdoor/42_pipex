@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 14:40:50 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/27 16:39:55 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/29 08:55:16 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,21 +58,7 @@ static char	**ft_split_helper(const char *s, int *idx)
 	return (sp);
 }
 
-// static void	ft_set_minus_one(int *nb, int nb_len)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (i < nb_len)
-// 	{
-// 		nb[i] = -1;
-// 		i++ ;
-// 	}
-// }
-
-// ft_split_and_trim()
-
-static void	ft_split_find_len_h1(int *i, const char *s, int *index, int *j)
+static void	ft_split_find_len_h(int *i, const char *s, int *index, int *j)
 {
 	while (s[*i] && s[*i] != ' ')
 		*i += 1;
@@ -105,7 +91,7 @@ static void	ft_split_find_len(int *i, const char *s, int *index, int *j)
 			index[(*j)++] = (*i);
 	}
 	else
-		ft_split_find_len_h1 (i, s, index, j);
+		ft_split_find_len_h (i, s, index, j);
 }
 
 /* size of index if strlen == 1 , it require 3 for 2 index and -1 terminate */
@@ -136,34 +122,3 @@ char	**px_split(const char *s, char c)
 	}
 	return (ft_split_helper(s, index));
 }
-
-/* this code is finish in one function but use more memory
-char	**ft_split(const char *s, char c)
-{
-	int		start;
-	int		i;
-	int		j;
-	char	**split;
-
-	j = 0;
-	i = 0;
-	start = -1;
-	split = (char **) malloc (ft_strlen(s));
-	if (!split)
-		return (NULL);
-	while (s[i])
-	{
-		while (s[i] && s[i] == c)
-			i++ ;
-		if (s[i])
-			start = i;
-		while (s[i] && s[i] != c)
-			i++ ;
-		if (start >= 0)
-			split[j++] = ft_substr(s, start, i - start);
-		start = -1;
-	}
-	split[j] = NULL;
-	return (split);
-}
-*/

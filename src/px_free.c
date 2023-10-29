@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 07:57:37 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/27 08:02:49 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/29 08:57:08 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,20 @@
 void	free_pipex(t_pipex *pipex)
 {
 	if (pipex->argv)
+	{
 		free_split (pipex->argv);
+		pipex->argv = NULL;
+	}
 	if (pipex->path)
+	{
 		free_split (pipex->path);
+		pipex->path = NULL;		
+	}
 	if (pipex->cmd)
+	{
 		free (pipex->cmd);
+		pipex->path = NULL;	
+	}
 }
 
 void	close_pipe(t_pipex *pipex)

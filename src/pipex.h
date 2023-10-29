@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 13:22:45 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/27 15:17:12 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/29 13:53:14 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,9 @@
 # include "libft.h"
 # include "ft_printf.h"
 
-// # define WRONG_ARGS_NUMBER "Wrong number of argument"
-// # define WRONG_INFILE "Can not access Infile"
-// # define WRONG_OUTFILE "Can not access Outfile"
 # define WRONG_COMMAND "command not found"
-# define WRONG_PIPE "Error on create pipe"
-// # define WRONG_EXEC "Error on execute"
-# define WRONG_FORK "Fork error"
+// # define WRONG_PIPE "Error on create pipe"
+// # define WRONG_FORK "Fork error"
 
 typedef struct s_pipex
 {
@@ -57,9 +53,6 @@ typedef struct s_pipex
 	int		status;
 }	t_pipex;
 
-// debug
-// void	print_split(char **sp);
-
 // px_utils.c
 void	free_split(void *data);
 void	close_pipe(t_pipex *pipex);
@@ -71,8 +64,11 @@ void	first_child(t_pipex *pipex, char **argv, char **envp);
 void	second_child(t_pipex *pipex, char **argv, char **envp);
 
 // px_parse_cmd.c
-char	*parse_cmd(t_pipex *pipex, char *argv);
-char	**make_path(char **envp);
+// char	*parse_cmd(t_pipex *pipex, char *argv);
+// char	**make_path(char **envp);
+
+// new_parse_cmd.c
+void	new_parse_cmd(t_pipex *pipex, char *argv, char **envp);
 
 // px_free.c
 void	free_pipex(t_pipex *pipex);

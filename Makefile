@@ -16,8 +16,8 @@ BLUE="\\033[34m"
 MAGENTA="\\033[35m"
 
 # MPATH = mandatory
-MSRC = $(addprefix src/, pipex.c child_process.c px_utils.c px_parse_cmd.c\
-		px_free.c px_split.c)
+MSRC = $(addprefix src/, pipex.c child_process.c px_utils.c \
+		px_free.c px_split.c new_parse_cmd.c)
 
 # BPATH = bonus
 BSRC = $(addprefix src/, pipex_bonus.c child_process_bonus.c\
