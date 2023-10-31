@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 13:22:45 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/27 15:17:47 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/31 08:20:40 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,8 @@
 # include "ft_printf.h"
 # include "get_next_line.h"
 
-// # define WRONG_ARGS_NUMBER "Wrong number of argument"
-// # define WRONG_INFILE "Can not access Infile"
-// # define WRONG_OUTFILE "Can not access Outfile"
 # define WRONG_COMMAND "command not found"
 # define WRONG_PIPE "Error on create pipe"
-// # define WRONG_EXEC "Error on execute"
 # define WRONG_FORK "Fork error"
 # define WRONG_HERE_DOC "Error on read here_doc"
 # define HERE_DOC ".here_doc_tmp"
@@ -78,7 +74,7 @@ void	get_infile(char **argv, t_pipex *pipex);
 
 // px_utils.c
 void	free_split(void *data);
-void	exit_wrong_cmd(char *cmd, t_pipex *pipex);
+void	exit_cmd_not_found(char *cmd, t_pipex *pipex);
 void	exit_error(char *s, t_pipex *pipex, int exit_code);
 
 // px_free_bonus.c

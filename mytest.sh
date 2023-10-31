@@ -13,8 +13,8 @@ YELLOW="\033[33m"
 BLUE="\033[34m"
 MAGENTA="\033[35m"
 
-TEST_ACCESS=1
-TEST_ACCESS_COMMAND=0
+TEST_ACCESS=0
+TEST_ACCESS_COMMAND=1
 TEST_MANDATORY=0
 TEST_INVALID_ARG=0
 TEST_INVALID_ARG_HEREDOC=0
@@ -315,6 +315,7 @@ fi
 # -------------------------------------------
 if [ $TEST_ACCESS_COMMAND -eq 1 ]
 	then
+		clear
 		rm -f outfile original
 		touch test_cmd
 
@@ -324,6 +325,15 @@ if [ $TEST_ACCESS_COMMAND -eq 1 ]
 		./pipex infile cat ./test_cmd outfile
 		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
 		< infile cat | ./test_cmd > original
+		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
+		check_diff
+		sleep $TIME1
+
+		printf "${MAGENTA}\ntest_cmd 000 = zero bit${NC}\n"
+		printf "${MAGENTA}\n./pipex infile ./test_cmd cat outfile\n${NC}"
+		./pipex infile ./test_cmd cat outfile
+		printf "${ULINE}${GREEN}My program exit code: $?\n${NC}"
+		< infile ./test_cmd | cat> original
 		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
 		check_diff
 		sleep $TIME1
@@ -385,7 +395,6 @@ if [ $TEST_ACCESS_COMMAND -eq 1 ]
 		printf "${ULINE}${GREEN}Original exit code: $?\n${NC}"
 		check_diff
 		sleep $TIME1
-		clear_screen
 fi
 
 # check_diff

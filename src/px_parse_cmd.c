@@ -1,69 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   px_parse_cmd.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/27 07:52:48 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/29 10:52:30 by pnamnil          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "pipex.h"
 
-static char	*parse_cmd_2(t_pipex *pipex)
-{
-	char	**path;
-	char	*tmp;
-	
-	path = pipex->path;
-	if (!path)
-		return (NULL);
-	pipex->cmd = ft_strjoin ("/", *pipex->argv);
-	if (!pipex->cmd)
-		return (NULL);
-	while (*path)
-	{
-		tmp = ft_strjoin (*path, pipex->cmd);
-		if (!tmp)
-		{
-			free (pipex->cmd);
-			return (NULL);
-		}
-		if (access(tmp, X_OK) != -1)
-		{
-			free (pipex->cmd);
-			return (tmp);
-		}
-		free (tmp);
-		path++ ;
-	}
-	free (pipex->cmd);
-	return (NULL);
-}
-
-char	*parse_cmd(t_pipex *pipex, char *argv)
-{
-	pipex->argv = px_split (argv, 32);
-	if (pipex->argv == NULL || !*pipex->argv)
-		return (NULL);
-	if (ft_strchr(*pipex->argv, '/'))
-	{
-		if (access(*pipex->argv, R_OK | X_OK) == 0)
-		{
-			ft_printf ("file ok\n");
-			return (ft_strdup(*pipex->argv));
-		}
-		else if (errno == 13)
-			exit_error (*pipex->argv, pipex, 126);
-		else
-			exit_error (*pipex->argv, pipex, 127);
-	}
-	return (parse_cmd_2(pipex));
-}
-
-char	**make_path(char **envp)
+static char	**px_make_path(char **envp)
 {
 	char	**path;
 
@@ -75,4 +12,63 @@ char	**make_path(char **envp)
 	if (!path)
 		return (NULL);
 	return (path);
+}
+
+/* if not found in path it's exit command not found */
+static void	px_join_path(t_pipex *pipex)
+{
+	char	**path;
+	char	*cmd;
+
+	path = pipex->path;
+	while (*path)
+	{
+		cmd = ft_strjoin (*path, pipex->cmd);
+		if (!cmd)
+			exit_cmd_not_found (*pipex->argv, pipex);
+		if (access(cmd, F_OK) == 0)
+		{
+			free (pipex->cmd);
+			pipex->cmd = cmd;
+			return ;
+		}
+		free (cmd);
+		path++ ;
+	}
+	exit_cmd_not_found(*pipex->argv, pipex);
+}
+
+/*
+**	1.	if no argv in zsh: permission denied, bash: command not found
+**	2.	if have path sent this command to execve
+**	3	in case no path
+**	3.1	if file exited sent this command to execve
+**	3.2 if not exited it's error command not found exit: 127
+*/
+
+/* if command -eq "" in zsh: permission denied, bash: command not found */
+
+void	px_parse_cmd(t_pipex *pipex, char *argv, char **envp)
+{
+	pipex->argv = px_split (argv, 32);
+	if (!pipex->argv || !*pipex->argv)
+		exit_cmd_not_found ("", pipex);
+	if (ft_strchr(*pipex->argv, '/'))
+	{
+		pipex->cmd = ft_strdup(*pipex->argv);
+		return ;
+	}
+	pipex->path = px_make_path (envp);
+	if (!pipex->path || !*pipex->path)
+	{
+		if (access(*pipex->argv, F_OK) == 0)
+			pipex->cmd = ft_strdup(*pipex->argv);
+		else
+			exit_cmd_not_found (*pipex->argv, pipex);
+		return ;
+	}	
+	pipex->cmd = ft_strjoin ("/", *pipex->argv);
+	if (!pipex->cmd)
+		exit_cmd_not_found (*pipex->argv, pipex);
+	px_join_path (pipex);
 }

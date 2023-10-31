@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   px_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 11:25:26 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/27 08:02:42 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/30 12:31:45 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,14 @@ void	free_split(void *data)
 	char	**split;
 
 	split = (char **) data;
+	if (!split)
+		return ;
 	while (*split)
 		free (*split++);
 	free (data);
 }
 
-void	exit_wrong_cmd(char *cmd, t_pipex *pipex)
+void	exit_cmd_not_found(char *cmd, t_pipex *pipex)
 {
 	write (2, cmd, ft_strlen(cmd));
 	write (2, ": ", 2);
