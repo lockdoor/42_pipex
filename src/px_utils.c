@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 11:25:26 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/31 11:57:56 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/31 14:40:28 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,22 @@ void	px_exit_error(char *s, t_pipex *pipex, int exit_code)
 	exit (exit_code);
 }
 
-/* in case no such file, it come from argument have path but no file exited */
+/* 
+** in case no such file, it come from argument have path but no file exited
+** if ENOEXEC it's call /bin/bash to execute
+*/
 void	px_execute_cmd(t_pipex *pipex, char **envp)
 {
+	char	*argv[3];
+
 	if (execve(pipex->cmd, pipex->argv, envp) == -1)
 	{
 		if (errno == ENOEXEC)
 		{
-			if (access(pipex->cmd, R_OK | X_OK) == -1)
-			{
-				perror (pipex->cmd);
-				px_free_pipex (pipex);
-				exit (126);
-			}
-			px_free_pipex (pipex);
-			exit (0);
+			argv[0] = "/bin/bash";
+			argv[1] = pipex->cmd;
+			argv[2] = NULL;
+			execve ("/bin/bash", argv, envp);
 		}
 		perror (pipex->cmd);
 		px_free_pipex (pipex);
