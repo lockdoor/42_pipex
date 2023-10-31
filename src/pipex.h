@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 13:22:45 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/31 08:19:48 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/31 12:35:26 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,19 +52,20 @@ typedef struct s_pipex
 }	t_pipex;
 
 // px_utils.c
-void	free_split(void *data);
-void	exit_cmd_not_found(char *cmd, t_pipex *pipex);
-void	exit_error(char *s, t_pipex *pipex, int exit_code);
+void	px_free_split(void *data);
+void	px_exit_cmd_not_found(char *cmd, t_pipex *pipex);
+void	px_exit_error(char *s, t_pipex *pipex, int exit_code);
+void	px_execute_cmd(t_pipex *pipex, char **envp);
 
 // child_process.c
-void	first_child(t_pipex *pipex, char **argv, char **envp);
-void	second_child(t_pipex *pipex, char **argv, char **envp);
+void	px_first_child(t_pipex *pipex, char **argv, char **envp);
+void	px_second_child(t_pipex *pipex, char **argv, char **envp);
 
 // px_parse_cmd.c
 void	px_parse_cmd(t_pipex *pipex, char *argv, char **envp);
 
 // px_free.c
-void	free_pipex(t_pipex *pipex);
+void	px_free_pipex(t_pipex *pipex);
 
 // px_split.c
 char	**px_split(const char *s, char c);

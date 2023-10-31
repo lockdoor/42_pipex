@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   px_parse_cmd.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/31 10:50:42 by pnamnil           #+#    #+#             */
+/*   Updated: 2023/10/31 11:46:10 by pnamnil          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
 
 static char	**px_make_path(char **envp)
@@ -25,7 +37,7 @@ static void	px_join_path(t_pipex *pipex)
 	{
 		cmd = ft_strjoin (*path, pipex->cmd);
 		if (!cmd)
-			exit_cmd_not_found (*pipex->argv, pipex);
+			px_exit_cmd_not_found (*pipex->argv, pipex);
 		if (access(cmd, F_OK) == 0)
 		{
 			free (pipex->cmd);
@@ -35,7 +47,7 @@ static void	px_join_path(t_pipex *pipex)
 		free (cmd);
 		path++ ;
 	}
-	exit_cmd_not_found(*pipex->argv, pipex);
+	px_exit_cmd_not_found(*pipex->argv, pipex);
 }
 
 /*
@@ -52,7 +64,7 @@ void	px_parse_cmd(t_pipex *pipex, char *argv, char **envp)
 {
 	pipex->argv = px_split (argv, 32);
 	if (!pipex->argv || !*pipex->argv)
-		exit_cmd_not_found ("", pipex);
+		px_exit_cmd_not_found ("", pipex);
 	if (ft_strchr(*pipex->argv, '/'))
 	{
 		pipex->cmd = ft_strdup(*pipex->argv);
@@ -64,11 +76,11 @@ void	px_parse_cmd(t_pipex *pipex, char *argv, char **envp)
 		if (access(*pipex->argv, F_OK) == 0)
 			pipex->cmd = ft_strdup(*pipex->argv);
 		else
-			exit_cmd_not_found (*pipex->argv, pipex);
+			px_exit_cmd_not_found (*pipex->argv, pipex);
 		return ;
 	}	
 	pipex->cmd = ft_strjoin ("/", *pipex->argv);
 	if (!pipex->cmd)
-		exit_cmd_not_found (*pipex->argv, pipex);
+		px_exit_cmd_not_found (*pipex->argv, pipex);
 	px_join_path (pipex);
 }

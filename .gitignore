@@ -21,3 +21,5 @@ test_module/not_exited
 inaccess
 path
 wc
+pipex_bonus
+src/*.o

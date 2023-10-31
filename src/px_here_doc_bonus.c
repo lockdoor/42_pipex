@@ -6,13 +6,13 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 06:48:25 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/25 15:51:35 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/31 11:54:35 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-void	get_infile(char **argv, t_pipex *pipex)
+void	px_get_infile(char **argv, t_pipex *pipex)
 {
 	if (pipex->here_doc)
 		pipex->infile = open (HERE_DOC, O_RDONLY);
@@ -20,7 +20,7 @@ void	get_infile(char **argv, t_pipex *pipex)
 		pipex->infile = open (argv[1], O_RDONLY);
 }
 
-void	read_here_doc(char **argv, t_pipex *pipex)
+static void	px_read_here_doc(char **argv, t_pipex *pipex)
 {
 	char	*line;
 
@@ -38,12 +38,12 @@ void	read_here_doc(char **argv, t_pipex *pipex)
 	free (line);
 }
 
-int	count_argv(int argc, char **argv, t_pipex *pipex)
+void	px_count_argv(int argc, char **argv, t_pipex *pipex)
 {
 	if (argc < 5)
 	{
 		errno = EINVAL;
-		exit_error ("pipex", pipex, EXIT_FAILURE);
+		px_exit_error (*argv, pipex, EXIT_FAILURE);
 	}
 	pipex->here_doc = 0;
 	if (!ft_memcmp(argv[1], "here_doc", 9))
@@ -52,12 +52,11 @@ int	count_argv(int argc, char **argv, t_pipex *pipex)
 		if (argc - 1 < 5)
 		{
 			errno = EINVAL;
-			exit_error ("pipex", pipex, EXIT_FAILURE);
+			px_exit_error (*argv, pipex, EXIT_FAILURE);
 		}
 		pipex->infile = open (HERE_DOC, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 		if (pipex->infile != -1)
-			read_here_doc (argv, pipex);
+			px_read_here_doc (argv, pipex);
 	}
 	pipex->cmd_nb = argc - 3 - pipex->here_doc;
-	return (argc - pipex->here_doc);
 }

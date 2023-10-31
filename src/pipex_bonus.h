@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 13:22:45 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/31 08:20:40 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/10/31 11:57:09 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,27 +58,27 @@ typedef struct s_pipex
 }	t_pipex;
 
 // px_parse_cmd.c
-char	*parse_cmd(t_pipex *pipex, char *argv);
-char	**make_path(char **envp);
+void	px_parse_cmd(t_pipex *pipex, char *argv, char **envp);
 
 // manage_pipe_bonus.c
-void	create_pipe(t_pipex *pipex);
-void	close_pipe(t_pipex *pipex);
+void	px_create_pipe(t_pipex *pipex);
+void	px_close_pipe(t_pipex *pipex);
 
 // child_process_bonus.c
-void	child_process(int i, t_pipex *pipex, char **argv, char **envp);
+void	px_child_process(int i, t_pipex *pipex, char **argv, char **envp);
 
 // here_doc_bonus.c
-int		count_argv(int argc, char **argv, t_pipex *pipex);
-void	get_infile(char **argv, t_pipex *pipex);
+void	px_count_argv(int argc, char **argv, t_pipex *pipex);
+void	px_get_infile(char **argv, t_pipex *pipex);
 
 // px_utils.c
-void	free_split(void *data);
-void	exit_cmd_not_found(char *cmd, t_pipex *pipex);
-void	exit_error(char *s, t_pipex *pipex, int exit_code);
+void	px_free_split(void *data);
+void	px_exit_cmd_not_found(char *cmd, t_pipex *pipex);
+void	px_exit_error(char *s, t_pipex *pipex, int exit_code);
+void	px_execute_cmd(t_pipex *pipex, char **envp);
 
 // px_free_bonus.c
-void	free_pipex(t_pipex *pipex);
+void	px_free_pipex(t_pipex *pipex);
 
 // px_split.c
 char	**px_split(const char *s, char c);
