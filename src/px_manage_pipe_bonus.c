@@ -6,13 +6,13 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 10:34:46 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/31 11:54:06 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/11/02 10:57:13 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-void	px_error_pipe(t_pipex *pipex, int n)
+static void	px_error_pipe(t_pipex *pipex, int n)
 {
 	int	i;
 
@@ -21,7 +21,7 @@ void	px_error_pipe(t_pipex *pipex, int n)
 		free (pipex->fd[i]);
 	free (pipex->fd);
 	pipex->fd = NULL;
-	px_exit_error (WRONG_PIPE, pipex, EXIT_FAILURE);
+	px_exit_error (MALLOC_ERROR, pipex, EXIT_FAILURE);
 }
 
 void	px_create_pipe(t_pipex *pipex)
@@ -30,7 +30,7 @@ void	px_create_pipe(t_pipex *pipex)
 
 	pipex->fd = (int **) malloc((pipex->cmd_nb + 1) * sizeof(int **));
 	if (!pipex->fd)
-		px_exit_error (WRONG_PIPE, pipex, EXIT_FAILURE);
+		px_exit_error (MALLOC_ERROR, pipex, EXIT_FAILURE);
 	i = -1;
 	while (++i < pipex->cmd_nb + 1)
 	{

@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 13:22:45 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/31 12:35:26 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/11/02 08:46:07 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 # include "ft_printf.h"
 
 # define WRONG_COMMAND "command not found"
+# define MALLOC_ERROR "malloc error"
 
 typedef struct s_pipex
 {

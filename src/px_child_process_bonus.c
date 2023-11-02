@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 10:23:27 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/31 11:56:49 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/11/02 10:22:40 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ void	px_child_process(int i, t_pipex *pipex, char **argv, char **envp)
 		px_exit_error (WRONG_FORK, pipex, EXIT_FAILURE);
 	if (pipex->pid[i - 1] == 0)
 	{
-		px_check_file_open (i, argv, pipex);
-		px_parse_cmd(pipex, argv[i + 1 + pipex->here_doc], envp);
 		dup2 (pipex->fd[i - 1][0], STDIN_FILENO);
 		dup2 (pipex->fd[i][1], STDOUT_FILENO);
 		px_close_pipe (pipex);
+		px_check_file_open (i, argv, pipex);
+		px_parse_cmd(pipex, argv[i + 1 + pipex->here_doc], envp);
 		px_execute_cmd (pipex, envp);
 	}
 }

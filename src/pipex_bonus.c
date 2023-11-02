@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 16:11:32 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/31 12:34:30 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/11/02 10:55:25 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	main(int argc, char *argv[], char *envp[])
 		close(pipex.outfile);
 	pipex.pid = (int *) malloc (pipex.cmd_nb * sizeof(int *));
 	if (!pipex.pid)
-		px_exit_error ("pipex.pid", &pipex, errno);
+		px_exit_error (MALLOC_ERROR, &pipex, EXIT_FAILURE);
 	px_begin_fork (&pipex, argv, envp);
 	return (EXIT_SUCCESS);
 }

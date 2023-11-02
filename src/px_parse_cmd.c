@@ -6,24 +6,32 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 10:50:42 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/31 11:46:10 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/11/02 10:06:36 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static char	**px_make_path(char **envp)
+static void	px_make_path(t_pipex *pipex, char **envp)
 {
-	char	**path;
-
 	while (*envp && ft_memcmp(*envp, "PATH=", 5))
 		envp++ ;
 	if (*envp == NULL)
-		return (NULL);
-	path = ft_split(*envp + 5, ':');
-	if (!path)
-		return (NULL);
-	return (path);
+	{
+		pipex->path = NULL;
+		return ;
+	}
+	if (*envp[0] == 0)
+	{
+		pipex->path = NULL;
+		return ;
+	}
+	pipex->path = ft_split(*envp + 5, ':');
+	if (!pipex->path)
+	{
+		px_exit_error (MALLOC_ERROR, pipex, EXIT_FAILURE);
+		return ;
+	}
 }
 
 /* if not found in path it's exit command not found */
@@ -32,12 +40,15 @@ static void	px_join_path(t_pipex *pipex)
 	char	**path;
 	char	*cmd;
 
+	pipex->cmd = ft_strjoin ("/", *pipex->argv);
+	if (!pipex->cmd)
+		px_exit_error (MALLOC_ERROR, pipex, EXIT_FAILURE);
 	path = pipex->path;
 	while (*path)
 	{
 		cmd = ft_strjoin (*path, pipex->cmd);
 		if (!cmd)
-			px_exit_cmd_not_found (*pipex->argv, pipex);
+			px_exit_error (MALLOC_ERROR, pipex, EXIT_FAILURE);
 		if (access(cmd, F_OK) == 0)
 		{
 			free (pipex->cmd);
@@ -63,24 +74,24 @@ static void	px_join_path(t_pipex *pipex)
 void	px_parse_cmd(t_pipex *pipex, char *argv, char **envp)
 {
 	pipex->argv = px_split (argv, 32);
-	if (!pipex->argv || !*pipex->argv)
+	if (!pipex->argv)
+		px_exit_error (MALLOC_ERROR, pipex, EXIT_FAILURE);
+	if (!*pipex->argv)
 		px_exit_cmd_not_found ("", pipex);
 	if (ft_strchr(*pipex->argv, '/'))
 	{
 		pipex->cmd = ft_strdup(*pipex->argv);
+		if (!pipex->cmd)
+			px_exit_error (MALLOC_ERROR, pipex, EXIT_FAILURE);
 		return ;
 	}
-	pipex->path = px_make_path (envp);
+	px_make_path (pipex, envp);
 	if (!pipex->path || !*pipex->path)
 	{
-		if (access(*pipex->argv, F_OK) == 0)
-			pipex->cmd = ft_strdup(*pipex->argv);
-		else
-			px_exit_cmd_not_found (*pipex->argv, pipex);
+		pipex->cmd = ft_strdup(*pipex->argv);
+		if (!pipex->cmd)
+			px_exit_error (MALLOC_ERROR, pipex, EXIT_FAILURE);
 		return ;
-	}	
-	pipex->cmd = ft_strjoin ("/", *pipex->argv);
-	if (!pipex->cmd)
-		px_exit_cmd_not_found (*pipex->argv, pipex);
+	}
 	px_join_path (pipex);
 }

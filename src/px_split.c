@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 14:40:50 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/29 08:55:16 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/11/02 11:00:40 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	ft_split_find_len_h(int *i, const char *s, int *index, int *j)
 	while (s[*i] && s[*i] != ' ')
 		*i += 1;
 	index[*j] = *i;
-		*j += 1;
+	*j += 1;
 }
 
 static void	ft_split_find_len(int *i, const char *s, int *index, int *j)

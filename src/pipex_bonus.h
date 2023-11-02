@@ -6,7 +6,7 @@
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 13:22:45 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/31 11:57:09 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/11/02 08:46:38 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 # define WRONG_FORK "Fork error"
 # define WRONG_HERE_DOC "Error on read here_doc"
 # define HERE_DOC ".here_doc_tmp"
+# define MALLOC_ERROR "malloc error"
 
 typedef struct s_pipex
 {
