@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   here_doc_bonus.c                                   :+:      :+:    :+:   */
+/*   px_here_doc_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pnamnil <pnamnil@student.42bangkok.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 06:48:25 by pnamnil           #+#    #+#             */
-/*   Updated: 2023/10/31 11:54:35 by pnamnil          ###   ########.fr       */
+/*   Updated: 2023/11/03 08:19:24 by pnamnil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	px_read_here_doc(char **argv, t_pipex *pipex)
 	{
 		write (STDOUT_FILENO, "heredoc> ", 9);
 		line = get_next_line (STDIN_FILENO);
-		if (ft_strncmp (line, argv[2], ft_strlen (argv[2]) + 1) == 10)
+		if (!line || ft_strncmp (line, argv[2], ft_strlen (argv[2]) + 1) == 10)
 			break ;
 		write (pipex->infile, line, ft_strlen(line));
 		free (line);
